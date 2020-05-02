@@ -26,5 +26,5 @@ Cellery will use a number of technologies
 ### Resources:
 * https://www.udemy.com/course/java-multithreading-concurrency-performance-optimization/ (Multithreading concepts, potentially useful for performance enhancements/testing)
 * https://www.udemy.com/course/distributed-systems-cloud-computing-with-java/ (Distributed Java applications, talks about many concepts such as distributed database systems, Kafka, etc.)
-* https://www.linkedin.com/learning/creating-your-first-restful-spring-boot-microservice-with-jpa-2016?trk=learning-topics_trending-courses_related-content-card&upsellOrderOrigin=default_guest_learning (Spring boot resources) 
+* https://www.linkedin.com/learning/creating-your-first-spring-boot-microservice/build-a-microservice-with-spring-boot (Spring boot resources) 
 * https://www.youtube.com/watch?v=Hf4MJH0jDb4 (React native crash course)
