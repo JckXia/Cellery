@@ -12,18 +12,36 @@ const initalState = {
     },
     user: {
         name: 'Roy'
+    },
+    currentUserLoggedIn: {
+        id: '',
+        userName: '',
+        jwtToken: ''
     }
 }
 
 const MeetupContext = React.createContext();
 const UserContext = React.createContext();
 
-const reducer = (state,action)=>{
-    switch(action.type){
+const AuthContext = React.createContext();
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'successfullyAuthenticated':
+             return {
+                 ...state,
+                 id:action.payload.id,
+                 userName:action.payload.userName,
+                 jwtToken:action.payload.jwtToken,
+             };
+        case 'successfullyRegistered':
+            return state;
+        case 'successfullyLoggedOut':
+            return state;
         case 'subscribeUser':
             return {
                 ...state,
-                attendees: [...state.attendees,action.payload],
+                attendees: [...state.attendees, action.payload],
                 subscribed: true
             };
         case 'unSubscribeUser':
@@ -39,6 +57,25 @@ const reducer = (state,action)=>{
     }
 }
 
+const AuthContextProvider = ({...props}) => {
+    const [state, dispatch] = React.useReducer(reducer, initalState.currentUserLoggedIn);
+    return (
+        <AuthContext.Provider value={{
+            ...state,
+            onSuccessfulAuthentication: (userName, userId, jwtToken) => dispatch({
+                type: 'successfullyAuthenticated',
+                payload: {id: userId, userName: userName, jwtToken: jwtToken}
+            }),
+            onSuccessfullLogout: () => dispatch({
+                type: 'successfullyLoggedOut',
+                payload: {id: '', userName: '', jwtToken: ''}
+            })
+        }}>
+            {props.children}
+        </AuthContext.Provider>
+    )
+};
+
 const MeetupContextProvider = ({user, ...props}) => {
     const [state, dispatch] = React.useReducer(reducer, initalState.meetup);
     return (
@@ -52,35 +89,24 @@ const MeetupContextProvider = ({user, ...props}) => {
     )
 }
 
-const renderMeetup = (meetupObject) => {
-    console.log(`MEETUP handler`,meetupObject.subscribed);
-    return (
+function testCheckingUserObjectFunction(userObj){
+    console.log(userObj);
+    // userObj.onSuccessfulAuthentication('JackXia','12345','anmasvnasd');
+    return(
         <View>
-            <Text>{meetupObject.title}</Text>
-            <Text>{meetupObject.date}</Text>
-            <Text>{`There are in total ${meetupObject.attendees.length} attendees in total`}</Text>
-            {meetupObject.attendees.map(attendant => (
-                <Text>{attendant}</Text>
-
-            ))}
-            {!meetupObject.subscribed? (<Button title={'Subscribe'} onPress={meetupObject.handleSubscribe} />):(<Button title={`Unsubscribe`} onPress={meetupObject.handleUnsubscribe}/>)}
+            <Text>{userObj.userName}</Text>
+            <Button title={'Click me'} onPress={()=>{userObj.onSuccessfulAuthentication('Jack','1234','12412d')}}/>
         </View>
     )
-};
+}
 
 
 export default function App() {
     const [state, updateState] = React.useState(initalState);
     console.log('init state ', initalState);
-    return <UserContext.Provider value={initalState.user}>
-        <UserContext.Consumer>
-            {user => (
-                <MeetupContextProvider user={user}>
-                    <MeetupContext.Consumer>
-                        {meetup =>renderMeetup(meetup)}
-                    </MeetupContext.Consumer>
-                </MeetupContextProvider>
-                )}
-        </UserContext.Consumer>
-    </UserContext.Provider>
+    return <AuthContextProvider values={initalState.currentUserLoggedIn}>
+        <AuthContext.Consumer>
+            {userObj=>(testCheckingUserObjectFunction(userObj))}
+        </AuthContext.Consumer>
+    </AuthContextProvider>
 };
