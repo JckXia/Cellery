@@ -3,62 +3,84 @@ import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import {ScrollView} from "react-native";
 import {FlatList} from "react-native";
 
-
-export default function App() {
-    const [outputText, setOutputText] = useState('Open up App.js to start working');
-    const [courseGoals, setCourseGoals] = useState([]);
-    const goalInputHandler = (enteredText) => {
-        setOutputText(enteredText);
+const initalState = {
+    meetup: {
+        value: 'foo',
+        title: 'Online meetups',
+        date: Date(),
+        attendees: ['Bob', 'Jessy', 'Christina', 'Adam']
+    },
+    user: {
+        name: 'Roy'
     }
-
-    const addGoalHandler = () => {
-        // setCourseGoals(currentGoals => [...currentGoals, outputText]);
-        setCourseGoals(currentGoals => [...currentGoals, {id:Math.random.toString(), key:Math.random().toString(),value: outputText}]);
-    };
-
-    return (
-        <View style={styles.screen}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                           style={styles.input}
-                           onChangeText={goalInputHandler}
-                           value={outputText}/>
-                <Button title={'Add Goals'} onPress={addGoalHandler}/>
-            </View>
-            <FlatList
-                keyExtractor={(item,index)=>item.id}
-                data={courseGoals}
-                      renderItem={itemData =>(
-                          <View  style={styles.item}>
-                              <Text>{itemData.item.value}</Text>
-                          </View>
-                      )}
-            />
-        </View>
-    );
 }
 
-const styles = StyleSheet.create({
-    screen: {
-        padding: 50
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    input: {
-        width: '80%',
-        borderColor: '#808080',
-        borderWidth: 1,
-        marginRight: 10,
-        padding: 10
-    },
-    item:{
-        padding: 10,
-        marginVertical:10 ,
-        backgroundColor:'#808080',
-        borderColor: '#808080',
-        borderWidth: 41
+const MeetupContext = React.createContext();
+const UserContext = React.createContext();
+
+const reducer = (state,action)=>{
+    switch(action.type){
+        case 'subscribeUser':
+            return {
+                ...state,
+                attendees: [...state.attendees,action.payload],
+                subscribed: true
+            };
+        case 'unSubscribeUser':
+            return {
+                ...state,
+                attendees: state.attendees.filter(
+                    attendee => attendee !== action.payload
+                ),
+                subscribed: false
+            };
+        default:
+            return state;
     }
-});
+}
+
+const MeetupContextProvider = ({user, ...props}) => {
+    const [state, dispatch] = React.useReducer(reducer, initalState.meetup);
+    return (
+        <MeetupContext.Provider value={{
+            ...state,
+            handleSubscribe: () => dispatch({type: 'subscribeUser', payload: user.name}),
+            handleUnsubscribe: () => dispatch({type: 'unSubscribeUser', payload: user.name})
+        }}>
+            {props.children}
+        </MeetupContext.Provider>
+    )
+}
+
+const renderMeetup = (meetupObject) => {
+    console.log(`MEETUP handler`,meetupObject.subscribed);
+    return (
+        <View>
+            <Text>{meetupObject.title}</Text>
+            <Text>{meetupObject.date}</Text>
+            <Text>{`There are in total ${meetupObject.attendees.length} attendees in total`}</Text>
+            {meetupObject.attendees.map(attendant => (
+                <Text>{attendant}</Text>
+
+            ))}
+            {!meetupObject.subscribed? (<Button title={'Subscribe'} onPress={meetupObject.handleSubscribe} />):(<Button title={`Unsubscribe`} onPress={meetupObject.handleUnsubscribe}/>)}
+        </View>
+    )
+};
+
+
+export default function App() {
+    const [state, updateState] = React.useState(initalState);
+    console.log('init state ', initalState);
+    return <UserContext.Provider value={initalState.user}>
+        <UserContext.Consumer>
+            {user => (
+                <MeetupContextProvider user={user}>
+                    <MeetupContext.Consumer>
+                        {meetup =>renderMeetup(meetup)}
+                    </MeetupContext.Consumer>
+                </MeetupContextProvider>
+                )}
+        </UserContext.Consumer>
+    </UserContext.Provider>
+};
