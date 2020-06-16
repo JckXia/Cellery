@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Axios from "axios";
 
 
+//TODO: WE NEED TO FIND A WAY TO FORWARD PORTS INTO THE AVD
 const LOGIN_URL ='http://172.29.240.1:8080/users/login';
 
 const REGISTER_URL='http://172.29.240.1:8080/users/create';
@@ -77,15 +78,6 @@ const AuthContextProvider = ({...props}) => {
 };
 
 
-function testCheckingUserObjectFunction(userObj){
-    return(
-        <View>
-            <Text>{userObj.userName}</Text>
-            <Button title={'Click me'} onPress={()=>{userObj.onSuccessfulAuthentication('My Smol Bol','1234','12412d')}}/>
-        </View>
-    )
-}
-
 function SignInScreen() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -109,16 +101,34 @@ function SignInScreen() {
     );
 }
 
+function Home(){
+    return (
+        <View>
+            <Text>Home sweet home</Text>
+        </View>
+    );
+}
+
 const Stack = createStackNavigator();
 export default function App() {
-    const [state, updateState] = React.useState(initalState);
-    console.log('State ',state);
+
+    React.useEffect(()=>{
+        //TODO: Once we retrieve the token from the Async storage, add end pt
+        //to verify jwt token
+       console.log(`HOOK CALLED!`);
+    });
+
     return <AuthContextProvider values={initalState.currentUserLoggedIn}>
-        <NavigationContainer>
-            <Stack.Navigator>
-                {state.jwtToken?(<Stack.Screen name={'home'} component={<Text>Hu</Text>} /> )
-                    : (<Stack.Screen  name={'Sign in'} component={SignInScreen}/>) }
-            </Stack.Navigator>
-        </NavigationContainer>
+        <AuthContext.Consumer>
+            {state=>(
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        {state.jwtToken?(<Stack.Screen name={'home'} component={Home} /> )
+                            : (<Stack.Screen  name={'Sign in'} component={SignInScreen}/>) }
+                    </Stack.Navigator>
+                </NavigationContainer>
+            )}
+        </AuthContext.Consumer>
+
     </AuthContextProvider>
 };
