@@ -1,27 +1,21 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
-import {ScrollView} from "react-native";
-import {FlatList} from "react-native";
+import {AsyncStorage, StyleSheet, Text, View, Button, TextInput} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Axios from "axios";
+
+
+const LOGIN_URL ='http://172.29.240.1:8080/users/login';
+
+const REGISTER_URL='http://172.29.240.1:8080/users/create';
 
 const initalState = {
-    meetup: {
-        value: 'foo',
-        title: 'Online meetups',
-        date: Date(),
-        attendees: ['Bob', 'Jessy', 'Christina', 'Adam']
-    },
-    user: {
-        name: 'Roy'
-    },
     currentUserLoggedIn: {
-        id: '',
-        userName: '',
-        jwtToken: ''
+        id: null,
+        userName: null,
+        jwtToken: null
     }
 }
-
-const MeetupContext = React.createContext();
-const UserContext = React.createContext();
 
 const AuthContext = React.createContext();
 
@@ -38,20 +32,6 @@ const reducer = (state, action) => {
             return state;
         case 'successfullyLoggedOut':
             return state;
-        case 'subscribeUser':
-            return {
-                ...state,
-                attendees: [...state.attendees, action.payload],
-                subscribed: true
-            };
-        case 'unSubscribeUser':
-            return {
-                ...state,
-                attendees: state.attendees.filter(
-                    attendee => attendee !== action.payload
-                ),
-                subscribed: false
-            };
         default:
             return state;
     }
@@ -62,10 +42,30 @@ const AuthContextProvider = ({...props}) => {
     return (
         <AuthContext.Provider value={{
             ...state,
-            onSuccessfulAuthentication: (userName, userId, jwtToken) => dispatch({
-                type: 'successfullyAuthenticated',
-                payload: {id: userId, userName: userName, jwtToken: jwtToken}
-            }),
+            onSignInSubmit: async (email,password) => {
+                try {
+                    const loginReq = await Axios.post('http://172.31.112.1:8080/users/login',
+                        {
+                            password: password,
+                            email: email
+                        });
+                    console.log(`LOGIN REQ `,loginReq);
+                    await AsyncStorage.setItem('REQUEST_TOKEN',loginReq.headers.token);
+                    dispatch({
+                        type: 'successfullyAuthenticated',
+                        payload: {jwtToken: loginReq.headers.token}
+                    })
+                }catch(e){
+                    console.log(`ERRO! `,e);
+                }
+            },
+            onSuccessfulAuthentication: (userName, userId, jwtToken) =>{
+                console.log(`USERNAME `,userName);
+                dispatch({
+                    type: 'successfullyAuthenticated',
+                    payload: {id: userId, userName: userName, jwtToken: jwtToken}
+                })
+            } ,
             onSuccessfullLogout: () => dispatch({
                 type: 'successfullyLoggedOut',
                 payload: {id: '', userName: '', jwtToken: ''}
@@ -76,37 +76,49 @@ const AuthContextProvider = ({...props}) => {
     )
 };
 
-const MeetupContextProvider = ({user, ...props}) => {
-    const [state, dispatch] = React.useReducer(reducer, initalState.meetup);
-    return (
-        <MeetupContext.Provider value={{
-            ...state,
-            handleSubscribe: () => dispatch({type: 'subscribeUser', payload: user.name}),
-            handleUnsubscribe: () => dispatch({type: 'unSubscribeUser', payload: user.name})
-        }}>
-            {props.children}
-        </MeetupContext.Provider>
-    )
-}
 
 function testCheckingUserObjectFunction(userObj){
-    console.log(userObj);
-    // userObj.onSuccessfulAuthentication('JackXia','12345','anmasvnasd');
     return(
         <View>
             <Text>{userObj.userName}</Text>
-            <Button title={'Click me'} onPress={()=>{userObj.onSuccessfulAuthentication('Jack','1234','12412d')}}/>
+            <Button title={'Click me'} onPress={()=>{userObj.onSuccessfulAuthentication('My Smol Bol','1234','12412d')}}/>
         </View>
     )
 }
 
+function SignInScreen() {
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
+    const { onSignInSubmit} = React.useContext(AuthContext);
+    return (
+        <View>
+            <TextInput
+                placeholder="Username"
+                value={username}
+                onChangeText={setUsername}
+            />
+            <TextInput
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+            />
+            <Button title="Sign ind" onPress={() => { console.log(`Clicked`); onSignInSubmit(username,password)}} />
+        </View>
+    );
+}
+
+const Stack = createStackNavigator();
 export default function App() {
     const [state, updateState] = React.useState(initalState);
-    console.log('init state ', initalState);
+    console.log('State ',state);
     return <AuthContextProvider values={initalState.currentUserLoggedIn}>
-        <AuthContext.Consumer>
-            {userObj=>(testCheckingUserObjectFunction(userObj))}
-        </AuthContext.Consumer>
+        <NavigationContainer>
+            <Stack.Navigator>
+                {state.jwtToken?(<Stack.Screen name={'home'} component={<Text>Hu</Text>} /> )
+                    : (<Stack.Screen  name={'Sign in'} component={SignInScreen}/>) }
+            </Stack.Navigator>
+        </NavigationContainer>
     </AuthContextProvider>
 };
