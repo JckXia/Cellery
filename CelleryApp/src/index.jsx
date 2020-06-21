@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {AsyncStorage, StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {Formik} from 'formik';
 import Axios from "axios";
 
 
@@ -15,7 +16,7 @@ const initalState = {
         id: null,
         userName: null,
         jwtToken: null,
-        isRegistered:false
+        isRegistered: false
     }
 }
 
@@ -33,7 +34,7 @@ const reducer = (state, action) => {
         case 'successfullyRegistered':
             return {
                 ...state,
-                isRegistered:true
+                isRegistered: true
             };
         case 'successfullyLoggedOut':
             return state;
@@ -48,18 +49,18 @@ const AuthContextProvider = ({...props}) => {
         <AuthContext.Provider value={{
             ...state,
             onSignInSubmit: async (email, password) => {
-                    const loginReq = await Axios.post(LOGIN_URL,
-                        {
-                            password: password,
-                            email: email
-                        });
-                    await AsyncStorage.setItem('REQUEST_TOKEN', loginReq.headers.token);
-                    dispatch({
-                        type: 'successfullyAuthenticated',
-                        payload: {jwtToken: loginReq.headers.token}
-                    })
+                const loginReq = await Axios.post(LOGIN_URL,
+                    {
+                        password: password,
+                        email: email
+                    });
+                await AsyncStorage.setItem('REQUEST_TOKEN', loginReq.headers.token);
+                dispatch({
+                    type: 'successfullyAuthenticated',
+                    payload: {jwtToken: loginReq.headers.token}
+                })
             },
-            onSignUpSubmission: async (email,password,firstName,lastName) =>{
+            onSignUpSubmission: async (email, password, firstName, lastName) => {
                 const signUpRequest = await Axios.post(REGISTER_URL,
                     {
                         firstName,
@@ -67,12 +68,12 @@ const AuthContextProvider = ({...props}) => {
                         password,
                         lastName
                     });
-                console.log('SIGN up request ',signUpRequest);
+                console.log('SIGN up request ', signUpRequest);
                 dispatch({
                     type: 'successfullyRegistered',
-                    payload:{user: `${firstName}_${lastName}`}
+                    payload: {user: `${firstName}_${lastName}`}
                 })
-             },
+            },
             onSuccessfulAuthentication: (userName, userId, jwtToken) => {
                 console.log(`USERNAME `, userName);
                 dispatch({
@@ -90,53 +91,62 @@ const AuthContextProvider = ({...props}) => {
     )
 };
 
+function FormikSignUpForm({navigation}) {
+    const formData = {
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+    };
 
-function SignUpScreen({navigation}) {
-    const [password, setPassword] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const { onSignUpSubmission} = React.useContext(AuthContext);
+    const {onSignUpSubmission} = React.useContext(AuthContext);
+    const onSignUpButtonPressed = async (newUserInfo) => {
+        try {
+            await onSignUpSubmission(newUserInfo.email, newUserInfo.password, newUserInfo.firstName, newUserInfo.lastName);
+            navigation.navigate('Sign in');
+        } catch (e) {
+            alert(e);
+        }
+    };
     return (
-        <View>
-            <View>
-                <TextInput
-                    placeholder="email"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <TextInput
-                    placeholder="first Name"
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
-                <TextInput
-                    placeholder="last Name"
-                    value={lastName}
-                    onChangeText={setLastName}
-                />
-                <TextInput
-                    placeholder="Password"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-
-                <Button title={"Register"} onPress={async ()=>{
-                    try {
-                        await onSignUpSubmission(email, password, firstName, lastName);
+        <Formik
+            initialValues={formData}
+            onSubmit={values => onSignUpButtonPressed(values)}
+        >
+            {({handleChange, handleBlur, handleSubmit, values}) => (
+                <View>
+                    <TextInput
+                        placeholder={"email"}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        value={values.email}
+                    />
+                    <TextInput
+                        placeholder={"first name"}
+                        onChangeText={handleChange('firstName')}
+                        onBlur={handleBlur('firstName')}
+                        value={values.firstName}
+                    />
+                    <TextInput
+                        placeholder={"last name"}
+                        onChangeText={handleChange('lastName')}
+                        onBlur={handleBlur('lastName')}
+                        value={values.lastName}
+                    />
+                    <TextInput
+                        placeholder={"password"}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                    />
+                    <Button onPress={handleSubmit} title="Submit"/>
+                    <Button title="Sign in" onPress={() => {
                         navigation.navigate('Sign in');
-                    }catch(e){
-                        alert(e);
-                    }
-                }}/>
-
-                <Button title="Sign in" onPress={() => {
-                    navigation.navigate('Sign in');
-                }}/>
-            </View>
-        </View>
-    )
+                    }}/>
+                </View>
+            )}
+        </Formik>
+    );
 }
 
 function SignInScreen({navigation}) {
@@ -192,7 +202,7 @@ export default function App() {
                         {state.jwtToken ? (<Stack.Screen name={'home'} component={Home}/>)
                             : (<>
                                 <Stack.Screen name={'Sign in'} component={SignInScreen}/>
-                                <Stack.Screen name={'Sign up'} component={SignUpScreen}/>
+                                <Stack.Screen name={'Sign up'} component={FormikSignUpForm}/>
                             </>)}
                     </Stack.Navigator>
                 </NavigationContainer>
