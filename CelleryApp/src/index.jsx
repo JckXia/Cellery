@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Formik} from 'formik';
 import Axios from "axios";
-
+import * as Yup from 'yup';
 
 //TODO: WE NEED TO FIND A WAY TO FORWARD PORTS INTO THE AVD
 const LOGIN_URL = 'http://172.20.0.1:8080/users/login';
@@ -92,6 +92,16 @@ const AuthContextProvider = ({...props}) => {
 };
 
 function FormikSignUpForm({navigation}) {
+
+    const signUpSchema = Yup.object().shape({
+        email:Yup.string()
+            .email('Invalid email, try again!')
+            .required('Required'),
+        firstName:Yup.string()
+            .min(2,'Too Short!')
+            .max(50,'Too Long!')
+            .required('Required'),
+    });
     const formData = {
         email: '',
         password: '',
@@ -112,8 +122,10 @@ function FormikSignUpForm({navigation}) {
         <Formik
             initialValues={formData}
             onSubmit={values => onSignUpButtonPressed(values)}
+            validationSchema={signUpSchema}
+            validateOnBlur={false}
         >
-            {({handleChange, handleBlur, handleSubmit, values}) => (
+            {({handleChange, handleBlur, handleSubmit, values, errors,touched}) => (
                 <View>
                     <TextInput
                         placeholder={"email"}
@@ -121,12 +133,14 @@ function FormikSignUpForm({navigation}) {
                         onBlur={handleBlur('email')}
                         value={values.email}
                     />
+                    {errors.email ? (<Text>{errors.email}</Text>):null}
                     <TextInput
                         placeholder={"first name"}
                         onChangeText={handleChange('firstName')}
                         onBlur={handleBlur('firstName')}
                         value={values.firstName}
                     />
+                    {errors.firstName ? (<Text>{errors.firstName}</Text>):null}
                     <TextInput
                         placeholder={"last name"}
                         onChangeText={handleChange('lastName')}
