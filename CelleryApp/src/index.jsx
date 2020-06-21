@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {AsyncStorage, StyleSheet, Text, View, Button, TextInput} from 'react-native';
+import React from 'react';
+import {AsyncStorage, Text, View, Button, TextInput} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Formik} from 'formik';
@@ -104,7 +104,6 @@ function FormikSignUpForm({navigation}) {
     });
     const formData = {
         email: '',
-        password: '',
         firstName: '',
         lastName: '',
     };
