@@ -48,7 +48,6 @@ const AuthContextProvider = ({...props}) => {
         <AuthContext.Provider value={{
             ...state,
             onSignInSubmit: async (email, password) => {
-                try {
                     const loginReq = await Axios.post(LOGIN_URL,
                         {
                             password: password,
@@ -59,9 +58,6 @@ const AuthContextProvider = ({...props}) => {
                         type: 'successfullyAuthenticated',
                         payload: {jwtToken: loginReq.headers.token}
                     })
-                } catch (e) {
-                    alert(e.message);
-                }
             },
             onSignUpSubmission: async (email,password,firstName,lastName) =>{
                 const signUpRequest = await Axios.post(REGISTER_URL,
@@ -101,7 +97,6 @@ function SignUpScreen({navigation}) {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const { onSignUpSubmission} = React.useContext(AuthContext);
-    console.log(`NAVIGATION `, navigation);
     return (
         <View>
             <View>
@@ -127,14 +122,17 @@ function SignUpScreen({navigation}) {
                     secureTextEntry
                 />
 
-                <Button title={"Register"} onPress={()=>{
-                    onSignUpSubmission(email,password,firstName,lastName);
+                <Button title={"Register"} onPress={async ()=>{
+                    try {
+                        await onSignUpSubmission(email, password, firstName, lastName);
+                        navigation.navigate('Sign in');
+                    }catch(e){
+                        alert(e);
+                    }
                 }}/>
 
                 <Button title="Sign in" onPress={() => {
-                    console.log(`Clicked`);
                     navigation.navigate('Sign in');
-
                 }}/>
             </View>
         </View>
@@ -145,7 +143,7 @@ function SignInScreen({navigation}) {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const {onSignInSubmit} = React.useContext(AuthContext);
-    console.log(`NAVIGATION `, navigation);
+
     return (
         <View>
             <TextInput
@@ -159,9 +157,8 @@ function SignInScreen({navigation}) {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            <Button title="Sign in" onPress={() => {
-                console.log(`Clicked`);
-                onSignInSubmit(username, password)
+            <Button title="Sign in" onPress={async () => {
+                await onSignInSubmit(username, password);
             }}/>
             <Button title="Register" onPress={() => {
                 navigation.navigate('Sign up');
