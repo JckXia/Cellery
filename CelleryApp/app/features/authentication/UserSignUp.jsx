@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, TextInput, View, AsyncStorage} from "react-native";
+import {Button, TextInput, View} from "react-native";
 import {useAuth} from "../../providers/authProvider";
 import Axios from 'axios';
 

@@ -16,6 +16,13 @@ export function FormikSignUpForm({navigation}) {
             .min(2, 'Too Short!')
             .max(50, 'Too Long!')
             .required('Required'),
+        lastName: Yup.string()
+            .min(2,'Last name is too short!')
+            .max(50,'Last name is too long')
+            .required('Required'),
+        password: Yup.string()
+            .min(8,'password too short')
+            .required('Required')
     });
     const formData = {
         email: '',
@@ -26,7 +33,6 @@ export function FormikSignUpForm({navigation}) {
 
     const {onUserRegistration} = useAuth();
     const onSignUpButtonPressed = async (newUserInfo) => {
-        console.log(`NEW USER INFO `,newUserInfo);
         try {
             const userSignUpResp = await Axios.post(REGISTER_URL, {
                 email: newUserInfo.email,
@@ -34,7 +40,6 @@ export function FormikSignUpForm({navigation}) {
                 lastName: newUserInfo.lastName,
                 password: newUserInfo.password
             });
-            console.log(`USER SIGN UP RESP `,userSignUpResp);
             await onUserRegistration(newUserInfo.firstName,newUserInfo.lastName);
             navigation.navigate('Sign in');
         } catch (e) {
