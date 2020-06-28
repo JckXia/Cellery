@@ -154,10 +154,10 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 20
+        margin: 15
     },
     headerTextStyle:{
-      color:'green',
+      color:'#85C87C',
     },
     inputContainer: {
         flexDirection: 'column',
