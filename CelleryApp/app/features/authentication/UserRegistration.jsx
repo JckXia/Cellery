@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import React from "react";
 import {Formik} from "formik";
 import {View} from "react-native";
-import {Input, Item, Label, Button, Text} from 'native-base';
+import {Input, Item, Label, Button, Text ,H1} from 'native-base';
 import {useAuth} from "../../providers/authProvider";
 import Axios from "axios";
 
@@ -34,7 +34,7 @@ export function FormikSignUpForm({navigation}) {
         email: '',
         firstName: 'Jack',
         lastName: 'Xia',
-        userName:'',
+        userName: '',
         password: '',
         passwordConfirmation: ''
     };
@@ -63,10 +63,14 @@ export function FormikSignUpForm({navigation}) {
         >
             {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
                 <View style={styles.container}>
+                    <View style={styles.accountRegistrationHeader}>
+                        <H1 style={styles.headerTextStyle} >Create Your  </H1>
+                        <H1 style={styles.headerTextStyle}>Cellery Account</H1>
+                    </View>
                     <View style={styles.inputContainer}>
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Username</Label>
-                            <Item  style={{backgroundColor: '#D3D3D3'}}>
+                            <Item style={{backgroundColor: '#D3D3D3'}}>
                                 <Input
                                     value={values.userName}
                                     onChangeText={handleChange('userName')}
@@ -145,6 +149,15 @@ const styles = {
         alignItems: 'center',
         height: '20%',
         margin: 45
+    },
+    accountRegistrationHeader: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
+    },
+    headerTextStyle:{
+      color:'green',
     },
     inputContainer: {
         flexDirection: 'column',
