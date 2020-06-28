@@ -1,6 +1,6 @@
 import React from 'react';
 import {authReducer, initialState} from './reducer'
-import {AsyncStorage} from "react-native-web";
+import {AsyncStorage} from "react-native";
 
 const AuthContext = React.createContext();
 
@@ -20,8 +20,16 @@ export const AuthContextProvider = (props) => {
             type: 'successfullyAuthenticated',
             payload: {jwtToken: loginResp.headers.token}
         });
-        console.log(`SUCCESS AUTH`);
     }
+
+    const handleUserLogOut = async (logOutResp)=>{
+        await AsyncStorage.removeItem('REQUEST_TOKEN');
+        dispatch({
+           type:'successfullyLoggedOut',
+           payload:{jwtToken:'',user:''}
+        });
+    };
+
     const value = React.useMemo(() => {
         return {state, onUserRegistration, handleUserSignIn}
     }, [state]);

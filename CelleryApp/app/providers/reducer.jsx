@@ -11,6 +11,7 @@ export const initialState = {
 export const authReducer = (state,action)=>{
     switch (action.type) {
         case 'successfullyAuthenticated':
+            console.log(`ACTION PAYLOAD `,action.payload);
             return {
                 ...state,
                 id: action.payload.id,
@@ -23,7 +24,13 @@ export const authReducer = (state,action)=>{
                 isRegistered: true
             };
         case 'successfullyLoggedOut':
-            return state;
+            return {
+                ...state,
+                id:null,
+                userName:null,
+                jwtToken:null,
+                isRegistered: false
+            };
         default:
             return state;
     }

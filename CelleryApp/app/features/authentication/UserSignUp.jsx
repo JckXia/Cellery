@@ -1,5 +1,5 @@
 import React from "react";
-import {TextInput, View, Image} from "react-native";
+import { View, Image} from "react-native";
 import {Input, Item, Label, Button,Text} from 'native-base';
 
 const CelleryLogo = require('../../../assets/Cellery_logo.png');
@@ -7,8 +7,9 @@ import {useAuth} from "../../providers/authProvider";
 import Axios from 'axios';
 
 
-const LOGIN_URL = 'http://172.20.0.1:8080/users/login';
+//TODO: Because we are using emulators, we have to find a way to forward the port
 
+const LOGIN_URL='http://10.0.2.2:8080/users/login';
 export function SignInScreen({navigation}) {
 
     const [username, setUsername] = React.useState('');
@@ -23,6 +24,7 @@ export function SignInScreen({navigation}) {
             });
             await handleUserSignIn(loginResp);
         } catch (e) {
+            //TODO: Use Sweet alert(react-native equivalent)
             alert(e);
         }
     }
@@ -36,7 +38,7 @@ export function SignInScreen({navigation}) {
             </View>
 
             <View styles={styles.inputContainer}>
-                <Item stackedLabel style={{marginBottom: 20}}>
+                <Item  stackedLabel style={{marginBottom: 20}}>
                     <Label>Email</Label>
                     <Item style={{backgroundColor: '#D3D3D3'}}>
                         <Input
@@ -72,6 +74,9 @@ export function SignInScreen({navigation}) {
     );
 }
 
+
+//TODO refactor this into global file, such taht
+//styles can be imported
 const styles = {
     container: {
         margin: 40,
