@@ -6,15 +6,19 @@ import {SignInScreen} from '../features/authentication/UserSignUp';
 import {FormikSignUpForm} from '../features/authentication/UserRegistration';
 import AuthContextProvider, {AuthContext} from "../providers/authProvider";
 
-
 const Stack = createStackNavigator();
-export default function Navigator(props) {
+export default function Navigator() {
+
     return (
         <AuthContextProvider>
             <AuthContext.Consumer>
                 {({state}) => (
                     <NavigationContainer>
-                        <Stack.Navigator>
+                        <Stack.Navigator
+                            screenOptions={{
+                                headerShown:false
+                            }}
+                        >
                             {state.jwtToken ? (<Stack.Screen name={'home'} component={Dashboard}/>) : (
                                 <>
                                     <Stack.Screen name={'Sign in'} component={SignInScreen}/>
