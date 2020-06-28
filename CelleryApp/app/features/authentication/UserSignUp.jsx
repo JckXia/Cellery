@@ -1,15 +1,13 @@
 import React from "react";
-import { View, Image} from "react-native";
-import {Input, Item, Label, Button,Text} from 'native-base';
-
+import {View, Image} from "react-native";
+import {Input, Item, Label, Button, Text} from 'native-base';
+import {styles} from "../../styles";
+import {authApi} from '../../api';
 const CelleryLogo = require('../../../assets/Cellery_logo.png');
 import {useAuth} from "../../providers/authProvider";
-import Axios from 'axios';
 
 
-//TODO: Because we are using emulators, we have to find a way to forward the port
 
-const LOGIN_URL='http://10.0.2.2:8080/users/login';
 export function SignInScreen({navigation}) {
 
     const [username, setUsername] = React.useState('');
@@ -18,10 +16,7 @@ export function SignInScreen({navigation}) {
 
     const onUserSignInSubmission = async (username, password) => {
         try {
-            const loginResp = await Axios.post(LOGIN_URL, {
-                email: username,
-                password: password
-            });
+            const loginResp = await authApi.userLogin(username, password);
             await handleUserSignIn(loginResp);
         } catch (e) {
             //TODO: Use Sweet alert(react-native equivalent)
@@ -38,7 +33,7 @@ export function SignInScreen({navigation}) {
             </View>
 
             <View styles={styles.inputContainer}>
-                <Item  stackedLabel style={{marginBottom: 20}}>
+                <Item stackedLabel style={{marginBottom: 20}}>
                     <Label>Email</Label>
                     <Item style={{backgroundColor: '#D3D3D3'}}>
                         <Input
@@ -59,11 +54,11 @@ export function SignInScreen({navigation}) {
                     </Item>
                 </Item>
 
-                <View style={styles.userAuthActions}>
-                    <Button  style={styles.signInActions}  success onPress={async () => {
+                <View style={styles.userAuthOptions}>
+                    <Button style={styles.signInActions} success onPress={async () => {
                         await onUserSignInSubmission(username, password);
                     }}><Text>Sign In using email</Text></Button>
-                    <Button  style={styles.registerActions}  title="Register" onPress={() => {
+                    <Button style={styles.registerActions} title="Register" onPress={() => {
                         navigation.navigate('Sign up');
                     }}><Text>Sign up with email</Text></Button>
                 </View>
@@ -74,40 +69,3 @@ export function SignInScreen({navigation}) {
     );
 }
 
-
-//TODO refactor this into global file, such taht
-//styles can be imported
-const styles = {
-    container: {
-        margin: 40,
-        flex: 1
-    },
-    logo: {
-        width: 180,
-        height: 180,
-    },
-    imageContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '20%',
-        margin: 45
-    },
-    inputContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-    },
-    signInActions:{
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom:15
-    },
-    registerActions:{
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    userAuthActions:{
-        justifyContent:'space-between',
-        margin:40
-    }
-};

@@ -3,11 +3,9 @@ import React from "react";
 import {Formik} from "formik";
 import {View} from "react-native";
 import {Input, Item, Label, Button, Text ,H1} from 'native-base';
+import { styles }from '../../styles';
+import {authApi} from '../../api';
 import {useAuth} from "../../providers/authProvider";
-import Axios from "axios";
-
-
-const REGISTER_URL = 'http://10.0.2.2:8080/users/create';
 
 export function FormikSignUpForm({navigation}) {
 
@@ -42,14 +40,10 @@ export function FormikSignUpForm({navigation}) {
     const {onUserRegistration} = useAuth();
     const onSignUpButtonPressed = async (newUserInfo) => {
         try {
-            await Axios.post(REGISTER_URL, {
-                email: newUserInfo.email,
-                firstName: newUserInfo.firstName,
-                lastName: newUserInfo.lastName,
-                password: newUserInfo.password
-            });
-            await onUserRegistration(newUserInfo.firstName, newUserInfo.lastName);
-            navigation.navigate('Sign in');
+
+         await  authApi.userRegistration(newUserInfo.email,newUserInfo.firstName,newUserInfo.lastName,newUserInfo.password);
+         await onUserRegistration(newUserInfo.firstName, newUserInfo.lastName);
+         navigation.navigate('Sign in');
         } catch (e) {
             alert(e);
         }
@@ -132,48 +126,3 @@ export function FormikSignUpForm({navigation}) {
     );
 }
 
-//TODO refactor this into global file, such taht
-//styles can be imported
-const styles = {
-    container: {
-        margin: 40,
-        flex: 1
-    },
-    logo: {
-        width: 180,
-        height: 180,
-    },
-    imageContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '20%',
-        margin: 45
-    },
-    accountRegistrationHeader: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 15
-    },
-    headerTextStyle:{
-      color:'#85C87C',
-    },
-    inputContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-    },
-    signInActions: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 15
-    },
-    registerActions: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    userAuthActions: {
-        justifyContent: 'space-between',
-        margin: 30
-    }
-};

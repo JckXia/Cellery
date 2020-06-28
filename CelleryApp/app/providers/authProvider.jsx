@@ -1,6 +1,7 @@
 import React from 'react';
 import {authReducer, initialState} from './reducer'
 import {AsyncStorage} from "react-native";
+import {USER_SUCCESSFUL_AUTHENTICATED, USER_SUCCESSFUL_LOGOUT, USER_SUCCESSFUL_REGISTER} from '../actions'
 
 const AuthContext = React.createContext();
 
@@ -9,7 +10,7 @@ export const AuthContextProvider = (props) => {
 
     const onUserRegistration = async (firstName,lastName) => {
         dispatch({
-            type: 'successfullyRegistered',
+            type: USER_SUCCESSFUL_REGISTER,
             payload: {user: `${firstName}_${lastName}`}
         });
     };
@@ -17,21 +18,21 @@ export const AuthContextProvider = (props) => {
     const handleUserSignIn = async (loginResp) => {
         await AsyncStorage.setItem('REQUEST_TOKEN', loginResp.headers.token);
         dispatch({
-            type: 'successfullyAuthenticated',
+            type: USER_SUCCESSFUL_AUTHENTICATED,
             payload: {jwtToken: loginResp.headers.token}
         });
     }
 
-    const handleUserLogOut = async (logOutResp)=>{
+    const handleUserLogOut = async ()=>{
         await AsyncStorage.removeItem('REQUEST_TOKEN');
         dispatch({
-           type:'successfullyLoggedOut',
+           type:USER_SUCCESSFUL_LOGOUT,
            payload:{jwtToken:'',user:''}
         });
     };
 
     const value = React.useMemo(() => {
-        return {state, onUserRegistration, handleUserSignIn}
+        return {state, onUserRegistration, handleUserSignIn,handleUserLogOut}
     }, [state]);
     return (
         <AuthContext.Provider value={value}>

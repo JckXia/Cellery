@@ -1,3 +1,4 @@
+import {USER_SUCCESSFUL_AUTHENTICATED, USER_SUCCESSFUL_LOGOUT, USER_SUCCESSFUL_REGISTER} from '../actions'
 
 export const initialState = {
     currentUserLoggedIn: {
@@ -8,27 +9,26 @@ export const initialState = {
     }
 };
 
-export const authReducer = (state,action)=>{
+export const authReducer = (state, action) => {
     switch (action.type) {
-        case 'successfullyAuthenticated':
-            console.log(`ACTION PAYLOAD `,action.payload);
+        case USER_SUCCESSFUL_AUTHENTICATED:
             return {
                 ...state,
                 id: action.payload.id,
                 userName: action.payload.userName,
                 jwtToken: action.payload.jwtToken,
             };
-        case 'successfullyRegistered':
+        case USER_SUCCESSFUL_REGISTER:
             return {
                 ...state,
                 isRegistered: true
             };
-        case 'successfullyLoggedOut':
+        case USER_SUCCESSFUL_LOGOUT:
             return {
                 ...state,
-                id:null,
-                userName:null,
-                jwtToken:null,
+                id: null,
+                userName: null,
+                jwtToken: null,
                 isRegistered: false
             };
         default:
