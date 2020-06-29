@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import App from './app/navigation';
+import {StyleSheet, Text, View} from 'react-native';
+import App from './src';
 
 export default App;
-
