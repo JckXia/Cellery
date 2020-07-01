@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Dashboard} from '../features/dashboard/index';
 import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
-import {SignInScreen} from '../features/authentication/UserSignUp';
+import {SignInScreen} from '../features/authentication/UserSignIn';
 import {FormikSignUpForm} from '../features/authentication/UserRegistration';
 import AuthContextProvider, {AuthContext} from "../providers/authProvider";
 
