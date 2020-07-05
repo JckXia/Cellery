@@ -16,7 +16,7 @@ export function SignInScreen({navigation}) {
     const onUserSignInSubmission = async (username, password) => {
         try {
             const loginResp = await authApi.userLogin(username, password);
-            await handleUserSignIn(loginResp);
+            await handleUserSignIn(loginResp, username);
         } catch (e) {
             //TODO: Use Sweet alert(react-native equivalent)
             alert(e);

@@ -8,18 +8,17 @@ const AuthContext = React.createContext();
 export const AuthContextProvider = (props) => {
     const [state, dispatch] = React.useReducer(authReducer, initialState.currentUserLoggedIn);
 
-    const onUserRegistration = async (firstName,lastName) => {
+    const onUserRegistration = async () => {
         dispatch({
-            type: USER_SUCCESSFUL_REGISTER,
-            payload: {user: `${firstName}_${lastName}`}
+            type: USER_SUCCESSFUL_REGISTER
         });
     };
 
-    const handleUserSignIn = async (loginResp) => {
+    const handleUserSignIn = async (loginResp, username) => {
         await AsyncStorage.setItem('REQUEST_TOKEN', loginResp.headers.token);
         dispatch({
             type: USER_SUCCESSFUL_AUTHENTICATED,
-            payload: {jwtToken: loginResp.headers.token}
+            payload: {jwtToken: loginResp.headers.token, userName: username}
         });
     }
 
