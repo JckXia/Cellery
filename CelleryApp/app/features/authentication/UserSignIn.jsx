@@ -5,7 +5,6 @@ import {styles} from "../../styles";
 import {authApi} from '../../api';
 const CelleryLogo = require('../../../assets/Cellery_logo.png');
 import {useAuth} from "../../providers/authProvider";
-import {SOME_KEY, ANOTHER_KEY} from 'react-native-dotenv';
 
 
 export function SignInScreen({navigation}) {
@@ -25,8 +24,6 @@ export function SignInScreen({navigation}) {
     }
     return (
         <View style={styles.container}>
-                <Label>{SOME_KEY} and yet again...{ANOTHER_KEY}</Label>
-
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.logo}
