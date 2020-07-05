@@ -7,7 +7,6 @@ const CelleryLogo = require('../../../assets/Cellery_logo.png');
 import {useAuth} from "../../providers/authProvider";
 
 
-
 export function SignInScreen({navigation}) {
 
     const [username, setUsername] = React.useState('');
