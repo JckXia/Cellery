@@ -2,10 +2,11 @@ import * as Yup from "yup";
 import React from "react";
 import {Formik} from "formik";
 import {View} from "react-native";
-import {Input, Item, Label, Button, Text ,H1} from 'native-base';
-import { styles }from '../../styles';
+import {Input, Item, Label, Button, Text, H1} from 'native-base';
+import {styles} from '../../styles';
 import {authApi} from '../../api';
 import {useAuth} from "../../providers/authProvider";
+import AlertAsync from "react-native-alert-async";
 
 
 export function FormikSignUpForm({navigation}) {
@@ -36,11 +37,19 @@ export function FormikSignUpForm({navigation}) {
     const onSignUpButtonPressed = async (newUserInfo) => {
         try {
 
-         await  authApi.userRegistration(newUserInfo.email,newUserInfo.userName,newUserInfo.password);
-         await onUserRegistration();
+            await authApi.userRegistration(newUserInfo.email, newUserInfo.userName, newUserInfo.password);
+            await onUserRegistration();
 
-         alert('Your account has been successfully created.'); // has to be async; needs to be done
-         navigation.navigate('Sign in');
+            await AlertAsync(
+                'Yay!',
+                'Your account has been successfully created.',
+                [
+                    {text: 'Ok', onPress: () => Promise.resolve('ok')}
+                    ],
+                {cancelable: false, onDismiss: () => "ok"}
+            );
+
+            navigation.navigate('Sign in');
         } catch (e) {
             alert(e);
         }
@@ -55,7 +64,7 @@ export function FormikSignUpForm({navigation}) {
             {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
                 <View style={styles.container}>
                     <View style={styles.accountRegistrationHeader}>
-                        <H1 style={styles.headerTextStyle} >Create Your  </H1>
+                        <H1 style={styles.headerTextStyle}>Create Your </H1>
                         <H1 style={styles.headerTextStyle}>Cellery Account</H1>
                     </View>
                     <View style={styles.inputContainer}>
