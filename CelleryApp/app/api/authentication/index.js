@@ -1,7 +1,7 @@
 import Axios from "axios";
 
-const LOGIN_URL='http://10.0.2.2:8080/users/login';
-const REGISTER_URL = 'http://10.0.2.2:8080/users/create';
+const LOGIN_URL='http://10.0.0.55:5000/users/login';
+const REGISTER_URL = 'http://10.0.0.55:5000/users/create';
 
 export async function userLogin(email,password){
    return await Axios.post(LOGIN_URL,{
@@ -10,11 +10,10 @@ export async function userLogin(email,password){
     });
 }
 
-export async function userRegistration(email,firstName,lastName,password){
+export async function userRegistration(email,userName,password){
     return await Axios.post(REGISTER_URL,{
-       email,
-       firstName,
-       lastName,
-       password
+       email:email,
+       userName:userName,
+       password:password
     });
 }

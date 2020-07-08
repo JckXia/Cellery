@@ -2,37 +2,33 @@ import * as Yup from "yup";
 import React from "react";
 import {Formik} from "formik";
 import {View} from "react-native";
-import {Input, Item, Label, Button, Text ,H1} from 'native-base';
-import { styles }from '../../styles';
+import {Input, Item, Label, Button, Text, H1} from 'native-base';
+import {styles} from '../../styles';
 import {authApi} from '../../api';
 import {useAuth} from "../../providers/authProvider";
+import AlertAsync from "react-native-alert-async";
+
 
 export function FormikSignUpForm({navigation}) {
 
     const signUpSchema = Yup.object().shape({
+        userName: Yup.string()
+            .min(5, 'Username is too short!')
+            .max(255, 'Username is too long!')
+            .required('Required'),
         email: Yup.string()
             .email('Invalid email, try again!')
             .required('Required'),
-        firstName: Yup.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Required'),
-        lastName: Yup.string()
-            .min(2, 'Last name is too short!')
-            .max(50, 'Last name is too long')
-            .required('Required'),
         password: Yup.string()
-            .min(8, 'password too short')
+            .min(8, 'Password is too short')
             .required('Required'),
         passwordConfirmation: Yup.string()
             .oneOf([Yup.ref('password'), null], "Passwords don't match")
             .required('Required')
     });
     const formData = {
-        email: '',
-        firstName: 'Jack',
-        lastName: 'Xia',
         userName: '',
+        email: '',
         password: '',
         passwordConfirmation: ''
     };
@@ -41,9 +37,19 @@ export function FormikSignUpForm({navigation}) {
     const onSignUpButtonPressed = async (newUserInfo) => {
         try {
 
-         await  authApi.userRegistration(newUserInfo.email,newUserInfo.firstName,newUserInfo.lastName,newUserInfo.password);
-         await onUserRegistration(newUserInfo.firstName, newUserInfo.lastName);
-         navigation.navigate('Sign in');
+            await authApi.userRegistration(newUserInfo.email, newUserInfo.userName, newUserInfo.password);
+            await onUserRegistration();
+
+            await AlertAsync(
+                'Yay!',
+                'Your account has been successfully created.',
+                [
+                    {text: 'Ok', onPress: () => Promise.resolve('ok')}
+                    ],
+                {cancelable: false, onDismiss: () => "ok"}
+            );
+
+            navigation.navigate('Sign in');
         } catch (e) {
             alert(e);
         }
@@ -58,7 +64,7 @@ export function FormikSignUpForm({navigation}) {
             {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
                 <View style={styles.container}>
                     <View style={styles.accountRegistrationHeader}>
-                        <H1 style={styles.headerTextStyle} >Create Your  </H1>
+                        <H1 style={styles.headerTextStyle}>Create Your </H1>
                         <H1 style={styles.headerTextStyle}>Cellery Account</H1>
                     </View>
                     <View style={styles.inputContainer}>
@@ -71,6 +77,8 @@ export function FormikSignUpForm({navigation}) {
                                 />
                             </Item>
                         </Item>
+                        {errors.userName ? (<Text>{errors.userName}</Text>) : null}
+
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Email</Label>
                             <Item style={{backgroundColor: '#D3D3D3'}}>
@@ -81,6 +89,7 @@ export function FormikSignUpForm({navigation}) {
                             </Item>
                         </Item>
                         {errors.email ? (<Text>{errors.email}</Text>) : null}
+
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Password</Label>
                             <Item style={{backgroundColor: '#D3D3D3'}}>
@@ -91,6 +100,7 @@ export function FormikSignUpForm({navigation}) {
                                 />
                             </Item>
                         </Item>
+                        {errors.password ? (<Text>{errors.password}</Text>) : null}
 
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Re-enter password</Label>
