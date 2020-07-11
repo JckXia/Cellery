@@ -1,7 +1,5 @@
 import Axios from "axios";
-
-const LOGIN_URL='http://10.0.0.55:5000/users/login';
-const REGISTER_URL = 'http://10.0.0.55:5000/users/create';
+import {LOGIN_URL, REGISTER_URL} from 'react-native-dotenv';
 
 export async function userLogin(email,password){
    return await Axios.post(LOGIN_URL,{
