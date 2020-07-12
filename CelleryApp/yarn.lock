@@ -4981,6 +4981,11 @@ path-type@^2.0.0:
   dependencies:
     pify "^2.0.0"
 
+paths-js@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/paths-js/-/paths-js-0.4.10.tgz#a3575f409b4a36f8aa795ba4d051989021be58c7"
+  integrity sha512-JZoqlRSHtx+bc+xKI9o4bropEbqZBF4ZfYImiB1T9RYpHB73h5I8XZ7FfSBbHbBMtdD1c04ujjAPH8wUuu4+Gw==
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
@@ -5036,6 +5041,11 @@ plugin-error@^0.1.2:
     arr-diff "^1.0.1"
     arr-union "^2.0.1"
     extend-shallow "^1.1.2"
+
+point-in-polygon@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/point-in-polygon/-/point-in-polygon-1.0.1.tgz#d59b64e8fee41c49458aac82b56718c5957b2af7"
+  integrity sha1-1Ztk6P7kHElFiqyCtWcYxZV7Kvc=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -5223,6 +5233,15 @@ react-native-calendar-heatmap@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/react-native-calendar-heatmap/-/react-native-calendar-heatmap-0.2.4.tgz#ab91f4b41f6137cb28faf5123f483703d12db939"
   integrity sha512-1+fJLP5vKPlTA0YFdHNVgCWAYywLRr6QVNqjgM78B+Y87NT+sjkuoxW6PtZCk53N08qXte6jdZFvs70MEldBqg==
+
+react-native-chart-kit@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-chart-kit/-/react-native-chart-kit-6.3.0.tgz#51d27215fcd24b9d0537b99d4f0ffd17040a8c9d"
+  integrity sha512-WrR8I8hLAXkBo5zx1h3E9ZvodfBMG60rAvzpQEUtv/i7yeZM0Uyp/orWKnXLbTK5XlAV0l2AahXLaBHM0k+qcA==
+  dependencies:
+    lodash "^4.17.13"
+    paths-js "^0.4.10"
+    point-in-polygon "^1.0.1"
 
 react-native-dotenv@^0.2.0:
   version "0.2.0"
