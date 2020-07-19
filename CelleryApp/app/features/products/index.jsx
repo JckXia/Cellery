@@ -45,8 +45,8 @@ export function Products({navigation}) {
             'Are you sure?',
             'Deleting this product will remove it from any routine(s) it is currently in.',
             [
-                {text: 'No', onPress: () => Promise.resolve('no')},
-                {text: 'Yes', onPress: () => 'yes'}
+                {text: 'Yes', onPress: () => 'yes'},
+                {text: 'No', onPress: () => Promise.resolve('no')}
             ],
             {cancelable: true, onDismiss: () => "no"}
         );
