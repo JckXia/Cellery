@@ -48,12 +48,11 @@ export const styles={
     },
     button: {
         justifyContent: 'center',
-        padding: 10,
         margin: 5
     },
-    flex3: {
+    flexRow: {
         flexDirection: 'row',
-        flex: 3,
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
     }
