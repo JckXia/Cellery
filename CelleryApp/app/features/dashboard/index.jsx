@@ -41,7 +41,7 @@ export const Dashboard = () => {
 
     // PLACEHOLDER DATA
     const data = {
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [
             {
                 data: [20, 45, 28, 80, 99, 43],
@@ -60,28 +60,40 @@ export const Dashboard = () => {
                 </Text>
             </Button>
 
-            <Text style={{textAlign: 'center', padding: 10}}>{time.format('MMMM')}</Text>
+            <Text style={{fontSize: 20}}>{time.format('MMMM Do')}</Text>
+            <Text>{time.format('dddd')}</Text>
 
-            <ContributionGraph style={{alignItems:'center'}}
-                values={values}
-                endDate={new Date(time.clone().date(time.daysInMonth()).format('YYYY-MM-DD'))}
-                numDays={time.daysInMonth()}
-                width={screenWidth - 50} // "centered"
-                height={170} // squareSize * 5 + 4 * gutterSize
-                squareSize={30}
-                gutterSize={5}
-                chartConfig={chartConfig}
-                horizontal={false}
-                showMonthLabels={false}
-                onDayPress={() => alert('You touched the square')}
+            <View style={styles.flex3}>
+                <Button style={styles.button}>
+                    <Text>{'<'}</Text>
+                </Button>
+                <ContributionGraph
+                                   values={values}
+                                   endDate={new Date(time.clone().date(time.daysInMonth()).format('YYYY-MM-DD'))}
+                                   numDays={time.daysInMonth()}
+                                   width={screenWidth - screenWidth / 8}
+                                   height={screenWidth / 13 * 5 + 4 * 5} // squareSize * 5 + 4 * gutterSize
+                                   squareSize={screenWidth / 13}
+                                   gutterSize={5}
+                                   chartConfig={chartConfig}
+                                   horizontal={false}
+                                   showMonthLabels={false}
+                                   onDayPress={() => alert('You touched the square')} // change later to go to detailed cal view
                 />
+                <Button style={styles.button}>
+                    <Text>{'>'}</Text>
+                </Button>
+            </View>
+
 
 
             <View style={{padding: 10}}>
                 <Button style = {styles.button}>
                     <Text>Create/Edit Today's Log</Text>
                 </Button>
-
+                <Button style = {styles.button}>
+                    <Text>View Products</Text>
+                </Button>
                 <Button style = {styles.button}>
                     <Text>View Skincare Routines</Text>
                 </Button>
@@ -89,9 +101,9 @@ export const Dashboard = () => {
 
             <LineChart
                 data={data}
-                width={screenWidth - 10} // need to center
+                width={screenWidth - screenWidth / 6}
                 height={200}
-                withHorizontalLabels={false}
+                withHorizontalLabels={true}
                 fromZero={true}
                 chartConfig={chartConfig}
             />

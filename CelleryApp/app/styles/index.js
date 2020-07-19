@@ -50,5 +50,11 @@ export const styles={
         justifyContent: 'center',
         padding: 10,
         margin: 5
+    },
+    flex3: {
+        flexDirection: 'row',
+        flex: 3,
+        justifyContent: 'space-around',
+        alignItems: 'center'
     }
 };
