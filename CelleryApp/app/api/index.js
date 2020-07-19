@@ -1,3 +1,6 @@
 import * as authApi from './authentication';
-export { authApi};
+import * as routinesApi from './routines';
+import * as productsApi from './products';
+
+export {authApi, routinesApi, productsApi};
 

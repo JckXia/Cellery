@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios from "../axios";
 import {LOGIN_URL, REGISTER_URL} from 'react-native-dotenv';
 
 export async function userLogin(email,password){

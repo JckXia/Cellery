@@ -1,8 +1,10 @@
 import React from 'react';
 import {Container, Header, Body, Button, Icon, Left, Right, Segment, Text} from 'native-base';
+import {useAuth} from "../../providers/authProvider";
 
 
 export function Routines({navigation}) {
+    const {state} = useAuth();
 
     return (
         <Container>
