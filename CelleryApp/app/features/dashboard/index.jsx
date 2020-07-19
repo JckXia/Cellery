@@ -1,15 +1,15 @@
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
+import {Button, Text, View} from 'native-base';
 import {useAuth} from "../../providers/authProvider";
-import {Button} from "native-base";
 import {styles} from "../../styles";
-import {LineChart, ContributionGraph} from 'react-native-chart-kit';
+import {ContributionGraph, LineChart} from 'react-native-chart-kit';
 import moment from "moment";
 
 
-export const Dashboard = () => {
+export const Dashboard = ({navigation}) => {
     const {handleUserLogOut} = useAuth();
-    let time = moment().local();
+    const time = moment().local();
     const screenWidth = Dimensions.get('window').width;
     const onLogOutSubmitted = async () => {
         try {
@@ -91,10 +91,10 @@ export const Dashboard = () => {
                 <Button style = {styles.button}>
                     <Text>Create/Edit Today's Log</Text>
                 </Button>
-                <Button style = {styles.button}>
+                <Button style = {styles.button} onPress={() => navigation.navigate('products')}>
                     <Text>View Products</Text>
                 </Button>
-                <Button style = {styles.button}>
+                <Button style = {styles.button} onPress={() => navigation.navigate('routines')}>
                     <Text>View Skincare Routines</Text>
                 </Button>
             </View>
