@@ -1,5 +1,7 @@
 export const styles={
     container: {
+        alignContent: 'center',
+        justifyContent: 'center',
         margin: 40,
         flex: 1
     },
@@ -43,5 +45,16 @@ export const styles={
     userAuthOptions:{
         justifyContent:'space-between',
         margin:40
+    },
+    button: {
+        justifyContent: 'center',
+        padding: 10,
+        margin: 5
+    },
+    flex3: {
+        flexDirection: 'row',
+        flex: 3,
+        justifyContent: 'space-around',
+        alignItems: 'center'
     }
 };
