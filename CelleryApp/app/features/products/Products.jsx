@@ -17,6 +17,7 @@ import {
 import {useAuth} from "../../providers/authProvider";
 import {productsApi} from '../../api/index';
 import AlertAsync from 'react-native-alert-async';
+import {useFocusEffect} from '@react-navigation/native';
 
 
 export function Products({navigation}) {
@@ -24,9 +25,14 @@ export function Products({navigation}) {
     const [productsArray, setProductsArray] = React.useState([]);
     const [load, setLoad] = React.useState(false);
 
-    React.useEffect(() => {
-        retrieveProducts();
-    }, []);
+    // makes sure to fetch user's products when user enters the screen
+    // (even if component has mounted)
+    useFocusEffect(
+        React.useCallback(() => {
+            retrieveProducts();
+            console.log('boom!');
+        }, [])
+    );
 
     const retrieveProducts = () => {
         productsApi.userProducts(state.jwtToken)
@@ -58,7 +64,7 @@ export function Products({navigation}) {
                 })
                 .catch(err => {
                     console.log(err);
-                    alert('Uh oh, something went wrong when trying to delete the product(s)');
+                    alert('Uh oh, something went wrong when trying to delete the product');
                 });
         }
 
@@ -70,14 +76,15 @@ export function Products({navigation}) {
                 flexDirection: "row",
                 padding: 10,
                 justifyContent: "space-between",
-                alignItems: "center" ,
-                backgroundColor: "#e8e8e8" }}>
-                <Text style={{ fontWeight: "500" }}>
+                alignItems: "center",
+                backgroundColor: "#e8e8e8"
+            }}>
+                <Text style={{fontWeight: "500"}}>
                     {" "}{item.name}
                 </Text>
                 {expanded
-                    ? <Icon style={{ fontSize: 18 }} name="arrow-up" />
-                    : <Icon style={{ fontSize: 18 }} name="arrow-down" />}
+                    ? <Icon style={{fontSize: 18}} name="arrow-up"/>
+                    : <Icon style={{fontSize: 18}} name="arrow-down"/>}
             </View>
         );
     }
@@ -91,7 +98,10 @@ export function Products({navigation}) {
                     <Button small bordered rounded danger onPress={() => handleProductDelete(item.productId)}>
                         <Icon name='trash'></Icon>
                     </Button>
-                    <Button small bordered rounded success onPress={() => alert('Yeehaw')}>
+                    <Button small bordered rounded success onPress={() => {
+                        navigation.navigate('Product form', item);
+                        setLoad(false);
+                    }}>
                         <Icon type='FontAwesome' name='edit'/>
                     </Button>
                 </View>
@@ -99,26 +109,32 @@ export function Products({navigation}) {
         );
     }
 
-    if (load) {
-        return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.navigate('home')}>
-                            <Icon type='MaterialIcons' name='chevron-left'/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Products</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => alert('Yeehaw')}>
-                            <Icon name='add-circle'/>
-                        </Button>
-                    </Right>
-                </Header>
+    return (
+        <Container>
+            <Header>
+                <Left>
+                    <Button transparent onPress={() => {
+                        navigation.navigate('home');
+                        setLoad(false);
+                    }}>
+                        <Icon type='MaterialIcons' name='chevron-left'/>
+                    </Button>
+                </Left>
+                <Body>
+                    <Title>Products</Title>
+                </Body>
+                <Right>
+                    <Button transparent onPress={() => {
+                        navigation.navigate('Product form');
+                        setLoad(false);
+                    }}>
+                        <Icon name='add-circle'/>
+                    </Button>
+                </Right>
+            </Header>
 
-                {productsArray.length ? <Content padder>
+            {load ?
+                productsArray.length ? <Content padder>
                         <Accordion
                             dataArray={productsArray}
                             renderContent={_renderContent}
@@ -128,34 +144,11 @@ export function Products({navigation}) {
                     <Content padder>
                         <Text style={{textAlign: 'center'}}>You have no products. Add some!</Text>
                     </Content>
-                }
+                : <Content>
+                    <Spinner color='#000000'/>
+                </Content>}
 
-            </Container>
-        );
 
-    } else {
-        return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.navigate('home')}>
-                            <Icon type='MaterialIcons' name='chevron-left'/>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Products</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => alert('Yeehaw')}>
-                            <Icon name='add-circle'/>
-                        </Button>
-                    </Right>
-                </Header>
-                <Content>
-                    <Spinner color='#fbfbfb'/>
-                </Content>
-            </Container>
-        );
-    }
-
+        </Container>
+    );
 }

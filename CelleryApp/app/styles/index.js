@@ -55,5 +55,8 @@ export const styles={
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
+    },
+    textWarn: {
+        color: 'red'
     }
 };

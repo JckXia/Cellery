@@ -8,7 +8,8 @@ import {SignInScreen} from '../features/authentication/UserSignIn';
 import {FormikSignUpForm} from '../features/authentication/UserRegistration';
 import AuthContextProvider, {AuthContext} from "../providers/authProvider";
 import {Routines} from '../features/routines/index';
-import {Products} from "../features/products";
+import {Products} from "../features/products/Products";
+import {ProductForm} from "../features/products/ProductForm";
 
 const Stack = createStackNavigator();
 export default function Navigator() {
@@ -23,6 +24,13 @@ export default function Navigator() {
 
         loadFont();
     }, []);
+
+    const defaultProductFormParams = {
+        productId: '',
+        name: '',
+        description: ''
+    };
+
     return (
         <AuthContextProvider>
             <AuthContext.Consumer>
@@ -39,6 +47,7 @@ export default function Navigator() {
                                         <Stack.Screen name={'home'} component={Dashboard}/>
                                         <Stack.Screen name={'routines'} component={Routines}/>
                                         <Stack.Screen name={'products'} component={Products}/>
+                                        <Stack.Screen name={'Product form'} component={ProductForm} initialParams={defaultProductFormParams}/>
                                     </>
 
                                 ) : (
