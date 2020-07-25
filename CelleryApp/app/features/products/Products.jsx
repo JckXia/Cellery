@@ -248,17 +248,12 @@ export function Products({navigation}) {
             setLoad(false);
             setDeleteMode(false);
 
-            const promises = productsToDelete.map(p => {
-                return productsApi.deleteProduct(p, state.jwtToken).then(resp => {
-                    return resp
-                });
-            });
-
-            const result = await Promise.all(promises)
+            productsApi.deleteMultipleProducts(productsToDelete, state.jwtToken)
                 .then(resp => retrieveProducts())
                 .catch(err => {
+                    console.log(err);
                     retrieveProducts();
-                    alert('Uh oh...something went wrong...');
+                    alert('Uh oh...something went wrong while deleting products...');
                 });
 
             setApiUse(false);
