@@ -26,8 +26,3 @@ export async function editProduct(id, name, desc, token) {
 export async function deleteProduct(id, token) {
     return await Axios.delete(`${PRODUCTS_URL}/${id}`, {headers: { Authorization: `Bearer ${token}` }});
 }
-
-// productIds is an array of strings
-export async function deleteMultipleProducts(productIds, token) {
-    return productIds.map((id) => deleteProduct(id, token));
-}

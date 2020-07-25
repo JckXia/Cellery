@@ -58,5 +58,25 @@ export const styles={
     },
     textWarn: {
         color: 'red'
+    },
+    centerText: {
+        textAlign: 'center'
+    },
+    popupContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    popupTitle: {
+        fontSize: 20,
+        marginBottom: 10
+    },
+    view: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 };

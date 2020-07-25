@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import {useAuth} from "../../providers/authProvider";
 import {productsApi} from '../../api/index';
 import AlertAsync from 'react-native-alert-async';
@@ -8,14 +8,17 @@ import {
     Container,
     Content,
     Header,
-    Icon, Input, Item, Label,
+    Icon,
+    Input,
+    Item,
+    Label,
     Left,
     Right,
     Text,
     Title,
     View
 } from 'native-base';
-import {Formik, useFormikContext} from "formik";
+import {Formik} from "formik";
 import * as Yup from "yup";
 import {styles} from "../../styles";
 
@@ -57,25 +60,29 @@ export function ProductForm({route, navigation}) {
 
     const handleSaveProduct = async (values, errs) => {
         if (!errs.name && !errs.description) {
-            try {
-                if (productId.length === 0) {
-                    await productsApi.createProduct(values.name, values.description, state.jwtToken);
-                } else {
-                    await productsApi.editProduct(productId, values.name, values.description, state.jwtToken);
+            if (values.name.length === 0) {
+                alert('You can\'t create an empty product!');
+            } else {
+                try {
+                    if (productId.length === 0) {
+                        await productsApi.createProduct(values.name, values.description, state.jwtToken);
+                    } else {
+                        await productsApi.editProduct(productId, values.name, values.description, state.jwtToken);
+                    }
+
+                    await AlertAsync(
+                        'Yay!',
+                        'Changes saved.',
+                        [
+                            {text: 'Ok', onPress: () => 'ok'},
+                        ],
+                        {cancelable: false, onDismiss: () => "ok"}
+                    );
+
+                    navigation.navigate('products');
+                } catch (e) {
+                    alert('Uh oh, something went wrong trying to save your product...');
                 }
-
-                await AlertAsync(
-                    'Yay!',
-                    'Changes saved.',
-                    [
-                        {text: 'Ok', onPress: () => 'ok'},
-                    ],
-                    {cancelable: false, onDismiss: () => "ok"}
-                );
-
-                navigation.navigate('products');
-            } catch (e) {
-                alert('Uh oh, something went wrong trying to save your product...');
             }
         }
     };
@@ -93,7 +100,8 @@ export function ProductForm({route, navigation}) {
                     <Title>{productId.length ? 'Edit Product' : 'Create Product'}</Title>
                 </Body>
                 <Right>
-                    <Button transparent onPress={() => handleSaveProduct(formRef.current.values, formRef.current.errors)}>
+                    <Button transparent
+                            onPress={() => handleSaveProduct(formRef.current.values, formRef.current.errors)}>
                         <Text>Save</Text>
                     </Button>
                 </Right>
@@ -131,7 +139,8 @@ export function ProductForm({route, navigation}) {
                                         />
                                     </Item>
                                 </Item>
-                                {errors.description ? (<Text style={styles.textWarn}>{errors.description}</Text>) : null}
+                                {errors.description ? (
+                                    <Text style={styles.textWarn}>{errors.description}</Text>) : null}
 
                             </View>
                         </View>

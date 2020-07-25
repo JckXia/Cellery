@@ -5229,6 +5229,13 @@ react-native-alert-async@^1.0.5:
   resolved "https://registry.yarnpkg.com/react-native-alert-async/-/react-native-alert-async-1.0.5.tgz#f67e3d1f6c877cce8e8cd74cef3d596713f0fdb4"
   integrity sha512-HeG0zdjtlANl8KkF9AhqgkaEooXip44Fb01dmCnYSYMm6PoRdcV4aIy6l/yAOQmArrl8LTP58APSiuZXBMCbwQ==
 
+react-native-animatable@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+  integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-calendar-heatmap@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/react-native-calendar-heatmap/-/react-native-calendar-heatmap-0.2.4.tgz#ab91f4b41f6137cb28faf5123f483703d12db939"
@@ -5287,6 +5294,14 @@ react-native-keyboard-aware-scroll-view@0.9.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
+
+react-native-modal@^11.5.6:
+  version "11.5.6"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
+  integrity sha512-APGNfbvgC4hXbJqcSADu79GLoMKIHUmgR3fDQ7rCGZNBypkStSP8imZ4PKK/OzIZZfjGU9aP49jhMgGbhY9KHA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "1.3.3"
 
 react-native-reanimated@~1.7.0:
   version "1.7.1"
