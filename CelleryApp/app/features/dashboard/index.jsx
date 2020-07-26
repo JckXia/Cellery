@@ -19,6 +19,9 @@ export const Dashboard = ({navigation}) => {
     const [settings, setSettings] = React.useState(false);
     const [calTime, setCalTime] = React.useState(time.clone());
     const screenWidth = Dimensions.get('window').width;
+    const [past30Btn, setPast30Btn] = React.useState(true);
+    const [past90Btn, setPast90Btn] = React.useState(false);
+    const [pastYearBtn, setPastYearBtn] = React.useState(false);
 
     React.useEffect(() => {
         // get cur month data
@@ -33,6 +36,9 @@ export const Dashboard = ({navigation}) => {
             alert(e);
         }
     };
+
+    // TODO: fetching skin ratings from logs too...maybe have an effect hook for when there are changes to that btn?
+    // TODO: How to handle when to fetch logs again???
 
     // TODO
     const getMonthLogs = () => {
@@ -238,14 +244,55 @@ export const Dashboard = ({navigation}) => {
 
                         <View style={styles.flexRow}>
                             <Segment>
-                                <Button first active>
-                                    <Text>Past 30 days</Text>
+                                <Button style={{
+                                    borderColor: past30Btn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey,
+                                    backgroundColor: past30Btn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey
+                                }}
+                                        first active={past30Btn}
+                                        onPress={() => {
+                                            if (!past30Btn) {
+                                                setPast90Btn(false);
+                                                setPastYearBtn(false);
+                                                setPast30Btn(true);
+                                            }
+                                        }}>
+                                    <Text style={{color: past30Btn ? COLOURS.celleryWhite : COLOURS.celleryDarkGrey}}>
+                                        Past 30 days
+                                    </Text>
                                 </Button>
-                                <Button>
-                                    <Text>Past 90 days</Text>
+
+                                <Button style={{
+                                    borderColor: past90Btn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey,
+                                    backgroundColor: past90Btn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey
+                                }}
+                                        active={past90Btn}
+                                        onPress={() => {
+                                            if (!past90Btn) {
+                                                setPast30Btn(false);
+                                                setPastYearBtn(false);
+                                                setPast90Btn(true);
+                                            }
+                                        }}>
+                                    <Text style={{color: past90Btn ? COLOURS.celleryWhite : COLOURS.celleryDarkGrey}}>
+                                        Past 90 days
+                                    </Text>
                                 </Button>
-                                <Button last>
-                                    <Text>Past year</Text>
+
+                                <Button style={{
+                                    borderColor: pastYearBtn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey,
+                                    backgroundColor: pastYearBtn ? COLOURS.celleryDarkGrey : COLOURS.celleryLightGrey
+                                }}
+                                        active={pastYearBtn} last
+                                        onPress={() => {
+                                            if (!pastYearBtn) {
+                                                setPast30Btn(false);
+                                                setPast90Btn(false);
+                                                setPastYearBtn(true);
+                                            }
+                                        }}>
+                                    <Text style={{color: pastYearBtn ? COLOURS.celleryWhite : COLOURS.celleryDarkGrey}}>
+                                        Past year
+                                    </Text>
                                 </Button>
                             </Segment>
                         </View>
