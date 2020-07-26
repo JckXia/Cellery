@@ -7,6 +7,7 @@ import {styles} from '../../styles';
 import {authApi} from '../../api';
 import {useAuth} from "../../providers/authProvider";
 import AlertAsync from "react-native-alert-async";
+import {COLOURS} from "../../colours";
 
 
 export function FormikSignUpForm({navigation}) {
@@ -70,7 +71,7 @@ export function FormikSignUpForm({navigation}) {
                     <View style={styles.inputContainer}>
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Username</Label>
-                            <Item style={{backgroundColor: '#D3D3D3'}}>
+                            <Item style={{backgroundColor: COLOURS.inputBg}}>
                                 <Input
                                     value={values.userName}
                                     onChangeText={handleChange('userName')}
@@ -81,7 +82,7 @@ export function FormikSignUpForm({navigation}) {
 
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Email</Label>
-                            <Item style={{backgroundColor: '#D3D3D3'}}>
+                            <Item style={{backgroundColor: COLOURS.inputBg}}>
                                 <Input
                                     value={values.email}
                                     onChangeText={handleChange('email')}
@@ -92,7 +93,7 @@ export function FormikSignUpForm({navigation}) {
 
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Password</Label>
-                            <Item style={{backgroundColor: '#D3D3D3'}}>
+                            <Item style={{backgroundColor: COLOURS.inputBg}}>
                                 <Input
                                     value={values.password}
                                     onChangeText={handleChange('password')}
@@ -104,7 +105,7 @@ export function FormikSignUpForm({navigation}) {
 
                         <Item stackedLabel style={{marginBottom: 20}}>
                             <Label>Re-enter password</Label>
-                            <Item style={{backgroundColor: '#D3D3D3'}}>
+                            <Item style={{backgroundColor: COLOURS.inputBg}}>
                                 <Input
                                     value={values.passwordConfirmation}
                                     onChangeText={handleChange('passwordConfirmation')}
@@ -121,11 +122,11 @@ export function FormikSignUpForm({navigation}) {
                                 Create Account
                             </Text>
                         </Button>
-                        <Button style={styles.registerActions} title="Sign in" onPress={() => {
+                        <Button style={[styles.registerActions, {backgroundColor: COLOURS.celleryDarkGrey}]} title="Sign in" onPress={() => {
                             navigation.navigate('Sign in');
                         }}>
                             <Text>
-                                Sign In
+                                Back to Login
                             </Text>
                         </Button>
                     </View>

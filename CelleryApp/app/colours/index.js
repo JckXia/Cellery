@@ -6,5 +6,6 @@ export const COLOURS = {
     celleryDarkGrey: '#525252',
     celleryWhite: '#FFFFFF',
     celleryBlue: '#3B5998',
-    celleryYellow: '#FFFDD0'
+    celleryYellow: '#FFFDD0',
+    inputBg: '#D3D3D3'
 }

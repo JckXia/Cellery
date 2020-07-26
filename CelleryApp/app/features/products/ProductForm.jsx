@@ -124,7 +124,7 @@ export function ProductForm({route, navigation}) {
                             <View style={styles.inputContainer}>
                                 <Item stackedLabel style={{paddingBottom: 10}}>
                                     <Label style={{paddingBottom: 5}}>Product name</Label>
-                                    <Item style={{backgroundColor: COLOURS.celleryLightGrey}}>
+                                    <Item style={{backgroundColor: COLOURS.inputBg}}>
                                         <Input
                                             value={values.name}
                                             onChangeText={handleChange('name')}
@@ -135,7 +135,7 @@ export function ProductForm({route, navigation}) {
 
                                 <Item stackedLabel>
                                     <Label style={{paddingBottom: 5}}>Product description</Label>
-                                    <Item style={{backgroundColor: COLOURS.celleryLightGrey}}>
+                                    <Item style={{backgroundColor: COLOURS.inputBg}}>
                                         <Input
                                             multiline={true}
                                             value={values.description}

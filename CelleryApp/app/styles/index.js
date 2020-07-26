@@ -24,6 +24,7 @@ export const styles={
     },
     headerTextStyle:{
         color:'#85C87C',
+        fontWeight: '500'
     },
     inputContainer: {
         flexDirection: 'column',
