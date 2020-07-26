@@ -21,6 +21,7 @@ import {productsApi, routinesApi} from '../../api/index';
 import AlertAsync from "react-native-alert-async";
 import {FlatList} from 'react-native';
 import {styles} from "../../styles";
+import {COLOURS} from "../../colours";
 
 
 export function RoutineEdit({route, navigation}) {
@@ -68,6 +69,7 @@ export function RoutineEdit({route, navigation}) {
         return (<>
             <ListItem>
                 <CheckBox checked={productsInRoutine.includes(item.productId)}
+                          color={COLOURS.cellerySalmon}
                           onPress={() => handleCheckbox(item)}/>
                 <Body>
                     <Text>{item.name}</Text>
@@ -185,20 +187,23 @@ export function RoutineEdit({route, navigation}) {
 
     return (
         <Container>
-            <Header hasSegment>
+            <Header transparent>
                 <Left>
                     <Button transparent disabled={apiInUse} onPress={() => handleBackButton()}>
-                        <Icon type='MaterialIcons' name='chevron-left'/>
+                        <Icon style={{color: COLOURS.celleryGreen}} type='MaterialIcons' name='chevron-left'/>
                     </Button>
                 </Left>
                 <Body>
-                    <Title>{routineId.length && products.length ? isAm ? 'Edit AM Routine' : 'Edit PM Routine'
+                    <Title style={{
+                        fontSize: 16,
+                        color: COLOURS.celleryGreen
+                    }}>{routineId.length && products.length ? isAm ? 'Edit AM Routine' : 'Edit PM Routine'
                         : isAm ? 'Create AM Routine' : 'Create PM Routine'}</Title>
                 </Body>
                 <Right>
                     {allProducts.length ?
-                        <Button transparent disabled={apiInUse} onPress={() => handleSaveRoutine()}>
-                            <Text>Save</Text>
+                        <Button hasText transparent disabled={apiInUse} onPress={() => handleSaveRoutine()}>
+                            <Text style={{color: COLOURS.celleryGreen, fontWeight: '500'}}>Save</Text>
                         </Button> : <></>}
                 </Right>
             </Header>
@@ -207,16 +212,19 @@ export function RoutineEdit({route, navigation}) {
                 {load ? displayProductsList() : <Spinner color={'#000000'}/>}
             </Content>
 
-            {load && allProducts.length ? <Footer>
-                    <FooterTab>
-                        <Button onPress={() => handleSelect(select)}>
-                            <Text>{select}</Text>
-                        </Button>
-                        <Button onPress={() => handleSelect(unselect)}>
-                            <Text>{unselect}</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
+            {load && allProducts.length ?
+                <>
+                    <Footer>
+                        <FooterTab style={{backgroundColor: COLOURS.celleryGreen}}>
+                            <Button onPress={() => handleSelect(select)}>
+                                <Text style={{color: COLOURS.celleryWhite}}>{select}</Text>
+                            </Button>
+                            <Button onPress={() => handleSelect(unselect)}>
+                                <Text style={{color: COLOURS.celleryWhite}}>{unselect}</Text>
+                            </Button>
+                        </FooterTab>
+                    </Footer>
+                </>
                 : <></>}
 
 

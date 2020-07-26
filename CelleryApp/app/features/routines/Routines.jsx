@@ -14,13 +14,14 @@ import {
     Text,
     View
 } from "native-base";
+import {FlatList} from 'react-native';
 import {useAuth} from "../../providers/authProvider";
 import {useFocusEffect} from "@react-navigation/native";
 import {routinesApi} from "../../api";
 import Modal from 'react-native-modal';
 import {styles} from "../../styles";
-import {FlatList} from 'react-native';
 import AlertAsync from "react-native-alert-async";
+import {COLOURS} from "../../colours";
 
 
 export function Routines({navigation}) {
@@ -29,6 +30,8 @@ export function Routines({navigation}) {
     const noDesc = <><Text style={{fontStyle: 'italic'}}>No description</Text></>;
     const [load, setLoad] = React.useState(false);
     const [isActive, setIsActive] = React.useState(true);
+    const [onPmButton, setPmButton] = React.useState(false);
+    const [onAmButton, setAmButton] = React.useState(true);
     const [amRoutine, setAmRoutine] = React.useState([]);
     const [pmRoutine, setPmRoutine] = React.useState([]);
     const [apiInUse, setApiUse] = React.useState(false);
@@ -44,17 +47,17 @@ export function Routines({navigation}) {
     const retrieveRoutines = () => {
         setApiUse(true);
         setLoad(false);
-         routinesApi.userRoutines(state.jwtToken)
-             .then(resp => {
-                 setAmRoutine(resp.data.am);
-                 setPmRoutine(resp.data.pm);
-                 setLoad(true);
-             })
-             .catch(err => {
-                 alert('Uh oh...couldn\'t get your routine(s)'); // TODO: A diff way to deal with errors?
-                 setLoad(true);
-             });
-         console.log(pmRoutine);
+        routinesApi.userRoutines(state.jwtToken)
+            .then(resp => {
+                setAmRoutine(resp.data.am);
+                setPmRoutine(resp.data.pm);
+                setLoad(true);
+            })
+            .catch(err => {
+                alert('Uh oh...couldn\'t get your routine(s)'); // TODO: A diff way to deal with errors?
+                setLoad(true);
+            });
+        console.log(pmRoutine);
         setApiUse(false);
     }
 
@@ -74,9 +77,13 @@ export function Routines({navigation}) {
                     <Text>{item.name}</Text>
                 </Left>
                 <Right>
-                    <Button rounded small onPress={() => handleProductPress(item)}><Icon
-                        type='FontAwesome5'
-                        name='glasses'/></Button>
+                    <Button style={{backgroundColor: COLOURS.celleryLightGrey}} rounded small
+                            onPress={() => handleProductPress(item)}>
+                        <Icon
+                            style={{color: COLOURS.celleryDarkGrey}}
+                            type='FontAwesome5'
+                            name='glasses'/>
+                    </Button>
                 </Right>
             </ListItem>
         </>);
@@ -157,8 +164,8 @@ export function Routines({navigation}) {
                 <Button transparent disabled={apiInUse}
                         onPress={() => handleRoutineAction(isActive ? amRoutine : pmRoutine)}>
                     {(isActive && amRoutine) || (!isActive && pmRoutine) ?
-                        <Icon type='FontAwesome' name='edit'/> :
-                        <Icon type='Ionicons' name='add-circle'/>}
+                        <Icon style={{color: COLOURS.celleryBlue}} type='FontAwesome' name='edit'/> :
+                        <Icon style={{color: COLOURS.celleryGreen}} type='Ionicons' name='add-circle'/>}
                 </Button>
 
             </>);
@@ -166,19 +173,43 @@ export function Routines({navigation}) {
 
     return (
         <Container>
-            <Header hasSegment>
+            <Header hasSegment transparent>
                 <Left>
                     <Button transparent disabled={apiInUse} onPress={() => navigation.navigate('home')}>
-                        <Icon type='MaterialIcons' name='chevron-left'/>
+                        <Icon style={{color: COLOURS.celleryGreen}} type='MaterialIcons' name='chevron-left'/>
                     </Button>
                 </Left>
                 <Body>
-                    <Segment>
-                        <Button first active={isActive} onPress={() => setIsActive(!isActive)}>
-                            <Icon type='FontAwesome' name='sun-o'/>
+                    <Segment style={{backgroundColor: `rgba(0, 0, 0, 0)`}}>
+                        <Button first active={onAmButton}
+                                style={{
+                                    backgroundColor: onAmButton ? COLOURS.cellerySalmon : COLOURS.celleryMedGrey,
+                                    borderColor: onAmButton ? COLOURS.cellerySalmon : COLOURS.celleryMedGrey
+                                }}
+                                onPress={() => {
+                                    if (!isActive) {
+                                        setIsActive(true);
+                                        setAmButton(true);
+                                        setPmButton(false);
+                                    }
+                                }}>
+                            <Icon style={{color: onAmButton ? COLOURS.celleryWhite : COLOURS.celleryDarkGrey}}
+                                  type='FontAwesome' name='sun-o'/>
                         </Button>
-                        <Button last active={!isActive} onPress={() => setIsActive(!isActive)}>
-                            <Icon type='FontAwesome' name='moon-o'/>
+                        <Button last active={onPmButton}
+                                style={{
+                                    backgroundColor: onPmButton ? COLOURS.celleryBlue : COLOURS.celleryMedGrey,
+                                    borderColor: onPmButton ? COLOURS.celleryBlue : COLOURS.celleryMedGrey
+                                }}
+                                onPress={() => {
+                                    if (isActive) {
+                                        setIsActive(false);
+                                        setPmButton(true);
+                                        setAmButton(false);
+                                    }
+                                }}>
+                            <Icon style={{color: COLOURS.celleryWhite}}
+                                  type='FontAwesome' name='moon-o'/>
                         </Button>
                     </Segment>
                 </Body>
@@ -192,7 +223,7 @@ export function Routines({navigation}) {
                     <Text style={styles.centerText}>{noRoutinesMsg}</Text>}</Content>
                     : <Content padder>{pmRoutine ? displayRoutine(pmRoutine.products) :
                     <Text style={styles.centerText}>{noRoutinesMsg}</Text>}</Content>
-                : <Content padder><Spinner color="#000000"/></Content>}
+                : <Content padder><Spinner color={COLOURS.celleryDarkGrey}/></Content>}
         </Container>
     );
 }

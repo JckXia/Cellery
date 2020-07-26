@@ -24,6 +24,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Modal from "react-native-modal";
 import {styles} from "../../styles";
 import {FlatList} from "react-native";
+import {COLOURS} from "../../colours";
 
 
 export function Products({navigation}) {
@@ -159,10 +160,12 @@ export function Products({navigation}) {
                     <Text>{item.name}</Text>
                 </Left>
                 <Right>
-                    {deleteMode ? <CheckBox checked={productsToDelete.includes(item.productId)} color='red'
-                                            onPress={() => handleCheckbox(item)}/> :
-                        <Button rounded small onPress={() => handleProductPress(item)}>
-                            <Icon type='FontAwesome5' name='glasses'/>
+                    {deleteMode ?
+                        <CheckBox checked={productsToDelete.includes(item.productId)} color={COLOURS.cellerySalmon}
+                                  onPress={() => handleCheckbox(item)}/> :
+                        <Button style={{backgroundColor: COLOURS.celleryLightGrey}}
+                                rounded small onPress={() => handleProductPress(item)}>
+                            <Icon style={{color: COLOURS.celleryDarkGrey}} type='FontAwesome5' name='glasses'/>
                         </Button>}
                 </Right>
             </ListItem>
@@ -212,11 +215,13 @@ export function Products({navigation}) {
                 {productsArray.length ?
                     <Button danger={!deleteMode} transparent disabled={apiInUse}
                             onPress={() => setDeleteMode((prev) => !prev)}>
-                        {deleteMode ? <Icon type='FontAwesome5' name='glasses'/> : <Icon type='Ionicons' name='trash'/>}
+                        {deleteMode ?
+                            <Icon style={{color: COLOURS.celleryDarkGrey}} type='FontAwesome5' name='glasses'/> :
+                            <Icon type='Ionicons' name='trash'/>}
                     </Button> : <></>}
 
                 <Button transparent disabled={apiInUse} onPress={() => navigation.navigate('Product form')}>
-                    <Icon name='add-circle'/>
+                    <Icon style={{color: COLOURS.celleryGreen}} name='add-circle'/>
                 </Button>
             </>
         );
@@ -263,14 +268,14 @@ export function Products({navigation}) {
 
     return (
         <Container>
-            <Header>
+            <Header transparent>
                 <Left>
                     <Button transparent disabled={apiInUse} onPress={() => navigation.navigate('home')}>
-                        <Icon type='MaterialIcons' name='chevron-left'/>
+                        <Icon style={{color: COLOURS.celleryGreen}} type='MaterialIcons' name='chevron-left'/>
                     </Button>
                 </Left>
                 <Body>
-                    <Title>Products</Title>
+                    <Title style={{color: COLOURS.celleryGreen}}>Products</Title>
                 </Body>
                 <Right>
                     {load ? renderButtons() : <></>}
@@ -288,15 +293,16 @@ export function Products({navigation}) {
 
             {load && deleteMode && productsArray ?
                 <Footer>
-                    <FooterTab>
+                    <FooterTab style={{backgroundColor: COLOURS.celleryLightGrey}}>
                         <Button onPress={() => handleSelect(select)} disabled={apiInUse}>
-                            <Text>{select}</Text>
+                            <Text style={{color: COLOURS.celleryDarkGrey}}>{select}</Text>
                         </Button>
                         <Button onPress={() => handleBulkDelete()} disabled={apiInUse || productsToDelete.length === 0}>
-                            <Text>Delete</Text>
+                            <Text
+                                style={{color: apiInUse || productsToDelete.length === 0 ? COLOURS.celleryMedGrey : 'red'}}>Delete</Text>
                         </Button>
                         <Button onPress={() => handleSelect(unselect)} disabled={apiInUse}>
-                            <Text>{unselect}</Text>
+                            <Text style={{color: COLOURS.celleryDarkGrey}}>{unselect}</Text>
                         </Button>
                     </FooterTab>
                 </Footer> : <></>}

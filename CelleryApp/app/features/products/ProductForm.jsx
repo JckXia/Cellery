@@ -18,9 +18,11 @@ import {
     Title,
     View
 } from 'native-base';
+import {StatusBar} from 'react-native';
 import {Formik} from "formik";
 import * as Yup from "yup";
 import {styles} from "../../styles";
+import {COLOURS} from "../../colours";
 
 
 export function ProductForm({route, navigation}) {
@@ -90,19 +92,21 @@ export function ProductForm({route, navigation}) {
 
     return (
         <Container>
-            <Header>
+            <StatusBar/>
+            <Header transparent>
                 <Left>
                     <Button transparent onPress={() => handleBackButton()}>
-                        <Icon type='MaterialIcons' name='chevron-left'/>
+                        <Icon style={{color: COLOURS.celleryGreen}} type='MaterialIcons' name='chevron-left'/>
                     </Button>
                 </Left>
                 <Body>
-                    <Title>{productId.length ? 'Edit Product' : 'Create Product'}</Title>
+                    <Title
+                        style={{color: COLOURS.celleryGreen}}>{productId.length ? 'Edit Product' : 'Create Product'}</Title>
                 </Body>
                 <Right>
-                    <Button transparent
+                    <Button hasText transparent
                             onPress={() => handleSaveProduct(formRef.current.values, formRef.current.errors)}>
-                        <Text>Save</Text>
+                        <Text style={{color: COLOURS.celleryGreen, fontWeight: '500'}}>Save</Text>
                     </Button>
                 </Right>
             </Header>
@@ -118,9 +122,9 @@ export function ProductForm({route, navigation}) {
                         <View style={styles.container}>
 
                             <View style={styles.inputContainer}>
-                                <Item stackedLabel>
-                                    <Label>Product name</Label>
-                                    <Item style={{backgroundColor: '#D3D3D3'}}>
+                                <Item stackedLabel style={{paddingBottom: 10}}>
+                                    <Label style={{paddingBottom: 5}}>Product name</Label>
+                                    <Item style={{backgroundColor: COLOURS.celleryLightGrey}}>
                                         <Input
                                             value={values.name}
                                             onChangeText={handleChange('name')}
@@ -130,8 +134,8 @@ export function ProductForm({route, navigation}) {
                                 {errors.name ? (<Text style={styles.textWarn}>{errors.name}</Text>) : null}
 
                                 <Item stackedLabel>
-                                    <Label>Product description</Label>
-                                    <Item style={{backgroundColor: '#D3D3D3'}}>
+                                    <Label style={{paddingBottom: 5}}>Product description</Label>
+                                    <Item style={{backgroundColor: COLOURS.celleryLightGrey}}>
                                         <Input
                                             multiline={true}
                                             value={values.description}
