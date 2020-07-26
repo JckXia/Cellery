@@ -122,8 +122,8 @@ export function ProductForm({route, navigation}) {
                         <View style={styles.container}>
 
                             <View style={styles.inputContainer}>
-                                <Item stackedLabel style={{paddingBottom: 10}}>
-                                    <Label style={{paddingBottom: 5}}>Product name</Label>
+                                <Item stackedLabel style={{marginBottom: 20}}>
+                                    <Label>Product name</Label>
                                     <Item style={{backgroundColor: COLOURS.inputBg}}>
                                         <Input
                                             value={values.name}
@@ -133,8 +133,8 @@ export function ProductForm({route, navigation}) {
                                 </Item>
                                 {errors.name ? (<Text style={styles.textWarn}>{errors.name}</Text>) : null}
 
-                                <Item stackedLabel>
-                                    <Label style={{paddingBottom: 5}}>Product description</Label>
+                                <Item stackedLabel style={{marginBottom: 20}}>
+                                    <Label>Product description</Label>
                                     <Item style={{backgroundColor: COLOURS.inputBg}}>
                                         <Input
                                             multiline={true}
