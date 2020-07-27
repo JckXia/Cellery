@@ -15,12 +15,16 @@ export function SignInScreen({navigation}) {
     const {handleUserSignIn} = useAuth();
 
     const onUserSignInSubmission = async (username, password) => {
-        try {
-            const loginResp = await authApi.userLogin(username, password);
-            await handleUserSignIn(loginResp, username);
-        } catch (e) {
-            //TODO: Use Sweet alert(react-native equivalent)
-            alert(e);
+        if (username !== '' && password !== '') {
+            try {
+                const loginResp = await authApi.userLogin(username, password);
+                await handleUserSignIn(loginResp, username);
+            } catch (e) {
+                //TODO: Use Sweet alert(react-native equivalent)
+                alert(e);
+            }
+        } else {
+            alert("Please enter your login details");
         }
     }
     return (
