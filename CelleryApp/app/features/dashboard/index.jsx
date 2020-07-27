@@ -7,7 +7,7 @@ import {styles} from "../../styles";
 import moment from "moment";
 import {COLOURS} from "../../colours";
 import ContributionGraph from "react-native-chart-kit/dist/contribution-graph";
-import LineChart from "react-native-chart-kit/dist/line-chart";
+import {LineChart} from "react-native-svg-charts";
 
 
 export const Dashboard = ({navigation}) => {
@@ -84,7 +84,7 @@ export const Dashboard = ({navigation}) => {
         color: (day) => COLOURS.celleryMedGrey //getCalEntryColour(day.keys()[0], day.values()[0] ) // TODO
     };
 
-    // PLACEHOLDER DATA
+    // PLACEHOLDER DATA for calendar heatmap
     const values = [
         {date: '2020-07-01'},
         {date: '2020-07-02'},
@@ -95,42 +95,8 @@ export const Dashboard = ({navigation}) => {
         {date: '2020-07-07'}
     ];
 
-    // TODO: this line chart isn't good enough...need to replace with diff one...
-    const lineConfig = {
-        backgroundGradientFrom: COLOURS.celleryLightGrey,
-        backgroundGradientFromOpacity: 100,
-        backgroundGradientTo: COLOURS.celleryLightGrey,
-        backgroundGradientToOpacity: 100,
-        color: (opacity = 1) => COLOURS.celleryMedGrey, // label colors
-        strokeWidth: '2', // stroke of the data line
-
-        propsForDots: {
-            r: "2",
-            strokeWidth: "5",
-            stroke: COLOURS.cellerySalmon
-        },
-
-        propsForLabels: {
-            fontSize: 10
-        },
-
-        propsForBackgroundLines: {
-            stroke: COLOURS.celleryMedGrey,
-            strokeWidth: '2',
-            strokeDasharray: [0]
-        }
-    };
-
-    // PLACEHOLDER DATA
-    const data = {
-        datasets: [
-            {
-                data: [1, 2, 3, 4, 6, 7, 8, 4, 5, 6, 3, 3, 4, 5, 3, 6, 6, 2, 3, 5, 7, 5, 8, 3, 7, 1, 5, 7],
-                color: (opacity = 1) => COLOURS.celleryGreen, // color for line
-            }
-        ],
-    };
-
+    // PLACEHOLDER DATA for skin rating history
+    const data = [1, 2, 3, 4, 6, 7, 8, 4, 5, 6, 3, 3, 4, 5, 3, 6, 6, 2, 3, 5, 7, 5, 8, 3, 7, 1, 5, 7];
 
     return (
         <Container>
@@ -228,17 +194,32 @@ export const Dashboard = ({navigation}) => {
                             </Button>
                         </View>
 
+                        <View style={styles.flexRow}>
+                            <Button small
+                                    style={{
+                                        backgroundColor: COLOURS.celleryDarkGrey,
+                                        borderTopLeftRadius: 10,
+                                        borderTopRightRadius: 10
+                                    }}>
+                                <Text>Skin Rating History</Text>
+                            </Button>
+                        </View>
                         <LineChart
-                            data={data} // TODO: REPLACE THIS CHART WITH ANOTHER ONE FROM DIFF LIB
-                            width={screenWidth - screenWidth / 6}
-                            height={220}
-                            withHorizontalLabels={true}
-                            chartConfig={lineConfig}
-                            withInnerLines={false}
-                            withDots={false}
                             style={{
-                                borderRadius: 20,
-                                alignItems: 'center'
+                                height: 200,
+                                backgroundColor: COLOURS.celleryLightGrey,
+                                borderRadius: 20
+                            }}
+                            data={data}
+                            yMin={1}
+                            xMin={1}
+                            yMax={10}
+                            contentInset={{top: 10, bottom: 10, left: 30, right: 30}}
+                            showGrid={false}
+                            svg={{
+                                strokeWidth: 2.5,
+                                stroke: COLOURS.celleryGreen,
+                                strokeLinecap: 'round'
                             }}
                         />
 
