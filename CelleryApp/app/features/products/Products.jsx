@@ -284,7 +284,7 @@ export function Products({navigation}) {
 
             <Content padder>
                 {load ?
-                    productsArray ?
+                    productsArray.length ?
                         displayAllProducts(productsArray) :
                         <Text style={styles.centerText}>You have no products. Add some!</Text>
                     : <Spinner color='#000000'/>

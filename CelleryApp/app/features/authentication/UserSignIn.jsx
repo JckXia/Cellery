@@ -59,7 +59,7 @@ export function SignInScreen({navigation}) {
                 </Item>
 
                 <View style={styles.userAuthOptions}>
-                    <Button style={styles.signInActions} success onPress={async () => {
+                    <Button style={[styles.signInActions, {backgroundColor: COLOURS.celleryGreen}]} success onPress={async () => {
                         await onUserSignInSubmission(username, password);
                     }}><Text>Sign In</Text></Button>
                     <Button style={[styles.registerActions, {backgroundColor: COLOURS.cellerySalmon}]} title="Register" onPress={() => {

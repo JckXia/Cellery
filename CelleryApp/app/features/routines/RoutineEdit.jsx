@@ -194,10 +194,8 @@ export function RoutineEdit({route, navigation}) {
                     </Button>
                 </Left>
                 <Body>
-                    <Title style={{
-                        fontSize: 16,
-                        color: COLOURS.celleryGreen
-                    }}>{routineId.length && products.length ? isAm ? 'Edit AM Routine' : 'Edit PM Routine'
+                    <Title style={{color: COLOURS.celleryGreen}}>
+                        {routineId.length && products.length ? isAm ? 'Edit AM Routine' : 'Edit PM Routine'
                         : isAm ? 'Create AM Routine' : 'Create PM Routine'}</Title>
                 </Body>
                 <Right>

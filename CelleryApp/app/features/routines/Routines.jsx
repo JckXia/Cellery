@@ -49,8 +49,12 @@ export function Routines({navigation}) {
         setLoad(false);
         routinesApi.userRoutines(state.jwtToken)
             .then(resp => {
-                setAmRoutine(resp.data.am);
-                setPmRoutine(resp.data.pm);
+                if (resp.data.am != null) {
+                    setAmRoutine(resp.data.am);
+                }
+                if (resp.data.pm != null) {
+                    setPmRoutine(resp.data.pm);
+                }
                 setLoad(true);
             })
             .catch(err => {
@@ -157,13 +161,13 @@ export function Routines({navigation}) {
     const renderButtons = () => {
         return (
             <>
-                {(isActive && amRoutine) || (!isActive && pmRoutine) ?
+                {(isActive && amRoutine.length) || (!isActive && pmRoutine.length) ?
                     <Button danger transparent disabled={apiInUse} onPress={() => handleDeleteRoutine()}><Icon
                         type='Ionicons' name='trash'/></Button> : <></>}
 
                 <Button transparent disabled={apiInUse}
                         onPress={() => handleRoutineAction(isActive ? amRoutine : pmRoutine)}>
-                    {(isActive && amRoutine) || (!isActive && pmRoutine) ?
+                    {(isActive && amRoutine.length) || (!isActive && pmRoutine.length) ?
                         <Icon style={{color: COLOURS.celleryBlue}} type='FontAwesome' name='edit'/> :
                         <Icon style={{color: COLOURS.celleryGreen}} type='Ionicons' name='add-circle'/>}
                 </Button>
@@ -219,9 +223,9 @@ export function Routines({navigation}) {
             </Header>
 
             {load ?
-                isActive ? <Content padder>{amRoutine ? displayRoutine(amRoutine.products) :
+                isActive ? <Content padder>{amRoutine.length ? displayRoutine(amRoutine.products) :
                     <Text style={styles.centerText}>{noRoutinesMsg}</Text>}</Content>
-                    : <Content padder>{pmRoutine ? displayRoutine(pmRoutine.products) :
+                    : <Content padder>{pmRoutine.length ? displayRoutine(pmRoutine.products) :
                     <Text style={styles.centerText}>{noRoutinesMsg}</Text>}</Content>
                 : <Content padder><Spinner color={COLOURS.celleryDarkGrey}/></Content>}
         </Container>
