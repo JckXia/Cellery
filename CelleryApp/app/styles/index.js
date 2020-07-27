@@ -76,5 +76,11 @@ export const styles={
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    flexOne: {
+        flex: 1
+    },
+    flexTwo: {
+        flex: 2
     }
 };

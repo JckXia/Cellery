@@ -113,7 +113,7 @@ export function Routines({navigation}) {
     }
 
     const handleRoutineAction = (routine) => {
-        if (routine == null) {
+        if (routine.length === 0) {
             const param = {
                 routineId: '',
                 products: [],

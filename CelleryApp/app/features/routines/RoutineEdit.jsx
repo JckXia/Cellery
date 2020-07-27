@@ -193,7 +193,7 @@ export function RoutineEdit({route, navigation}) {
                         <Icon style={{color: COLOURS.celleryGreen}} type='MaterialIcons' name='chevron-left'/>
                     </Button>
                 </Left>
-                <Body>
+                <Body style={styles.flexTwo}>
                     <Title style={{color: COLOURS.celleryGreen}}>
                         {routineId.length && products.length ? isAm ? 'Edit AM Routine' : 'Edit PM Routine'
                         : isAm ? 'Create AM Routine' : 'Create PM Routine'}</Title>
