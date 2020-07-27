@@ -24,7 +24,7 @@ export const styles={
     },
     headerTextStyle:{
         color:'#85C87C',
-        fontWeight: '500'
+        fontWeight: '600'
     },
     inputContainer: {
         flexDirection: 'column',
@@ -56,9 +56,6 @@ export const styles={
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
-    },
-    textWarn: {
-        color: 'red'
     },
     centerText: {
         textAlign: 'center'

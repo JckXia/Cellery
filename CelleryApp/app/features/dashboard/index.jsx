@@ -157,10 +157,10 @@ export const Dashboard = ({navigation}) => {
                         <Modal isVisible={settings} animationIn='fadeIn' animationOut='fadeOut'
                                onBackdropPress={() => setSettings(false)}>
                             <View style={styles.popupContent}>
-                                <Button transparent style={styles.button} onPress={async () => {
+                                <Button hasText transparent style={styles.button} onPress={async () => {
                                     await onLogOutSubmitted();
                                 }}>
-                                    <Text style={styles.celleryGreen}>
+                                    <Text style={{color: COLOURS.celleryGreen}}>
                                         Logout
                                     </Text>
                                 </Button>

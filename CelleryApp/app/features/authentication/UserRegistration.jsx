@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import React from "react";
 import {Formik} from "formik";
 import {View} from "react-native";
-import {Input, Item, Label, Button, Text, H1} from 'native-base';
+import {Button, Content, H1, Input, Item, Label, Text} from 'native-base';
 import {styles} from '../../styles';
 import {authApi} from '../../api';
 import {useAuth} from "../../providers/authProvider";
@@ -46,7 +46,7 @@ export function FormikSignUpForm({navigation}) {
                 'Your account has been successfully created.',
                 [
                     {text: 'Ok', onPress: () => Promise.resolve('ok')}
-                    ],
+                ],
                 {cancelable: false, onDismiss: () => "ok"}
             );
 
@@ -56,84 +56,87 @@ export function FormikSignUpForm({navigation}) {
         }
     };
     return (
-        <Formik
-            initialValues={formData}
-            onSubmit={values => onSignUpButtonPressed(values)}
-            validationSchema={signUpSchema}
-            validateOnBlur={false}
-        >
-            {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
-                <View style={styles.container}>
-                    <View style={styles.accountRegistrationHeader}>
-                        <H1 style={styles.headerTextStyle}>Create Your </H1>
-                        <H1 style={styles.headerTextStyle}>Cellery Account</H1>
+        <Content>
+            <Formik
+                initialValues={formData}
+                onSubmit={values => onSignUpButtonPressed(values)}
+                validationSchema={signUpSchema}
+                validateOnBlur={false}>
+                {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+                    <View style={styles.container}>
+                        <View style={styles.accountRegistrationHeader}>
+                            <H1 style={styles.headerTextStyle}>Create Your </H1>
+                            <H1 style={styles.headerTextStyle}>Cellery Account</H1>
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <Item stackedLabel style={{marginBottom: 5}}>
+                                <Label>Username</Label>
+                                <Item style={{backgroundColor: COLOURS.inputBg}}>
+                                    <Input
+                                        value={values.userName}
+                                        onChangeText={handleChange('userName')}
+                                    />
+                                </Item>
+                            </Item>
+                            {errors.userName ? (<Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.userName}</Text>) : null}
+
+                            <Item stackedLabel style={{marginBottom: 5}}>
+                                <Label>Email</Label>
+                                <Item style={{backgroundColor: COLOURS.inputBg}}>
+                                    <Input
+                                        value={values.email}
+                                        onChangeText={handleChange('email')}
+                                    />
+                                </Item>
+                            </Item>
+                            {errors.email ? (<Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.email}</Text>) : null}
+
+                            <Item stackedLabel style={{marginBottom: 5}}>
+                                <Label>Password</Label>
+                                <Item style={{backgroundColor: COLOURS.inputBg}}>
+                                    <Input
+                                        value={values.password}
+                                        onChangeText={handleChange('password')}
+                                        secureTextEntry
+                                    />
+                                </Item>
+                            </Item>
+                            {errors.password ? (<Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.password}</Text>) : null}
+
+                            <Item stackedLabel style={{marginBottom: 5}}>
+                                <Label>Re-enter password</Label>
+                                <Item style={{backgroundColor: COLOURS.inputBg}}>
+                                    <Input
+                                        value={values.passwordConfirmation}
+                                        onChangeText={handleChange('passwordConfirmation')}
+                                        secureTextEntry
+                                    />
+                                </Item>
+                            </Item>
+                            {errors.passwordConfirmation ? (<Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.passwordConfirmation}</Text>) : null}
+
+                        </View>
+                        <View style={styles.userAuthActions}>
+                            <Button style={styles.signInActions} success onPress={handleSubmit} title="Submit">
+                                <Text>
+                                    Create Account
+                                </Text>
+                            </Button>
+                            <Button style={[styles.registerActions, {backgroundColor: COLOURS.celleryDarkGrey}]}
+                                    title="Sign in" onPress={() => {
+                                navigation.navigate('Sign in');
+                            }}>
+                                <Text>
+                                    Back to Login
+                                </Text>
+                            </Button>
+                        </View>
+
                     </View>
-                    <View style={styles.inputContainer}>
-                        <Item stackedLabel style={{marginBottom: 20}}>
-                            <Label>Username</Label>
-                            <Item style={{backgroundColor: COLOURS.inputBg}}>
-                                <Input
-                                    value={values.userName}
-                                    onChangeText={handleChange('userName')}
-                                />
-                            </Item>
-                        </Item>
-                        {errors.userName ? (<Text>{errors.userName}</Text>) : null}
+                )}
+            </Formik>
+        </Content>
 
-                        <Item stackedLabel style={{marginBottom: 20}}>
-                            <Label>Email</Label>
-                            <Item style={{backgroundColor: COLOURS.inputBg}}>
-                                <Input
-                                    value={values.email}
-                                    onChangeText={handleChange('email')}
-                                />
-                            </Item>
-                        </Item>
-                        {errors.email ? (<Text>{errors.email}</Text>) : null}
-
-                        <Item stackedLabel style={{marginBottom: 20}}>
-                            <Label>Password</Label>
-                            <Item style={{backgroundColor: COLOURS.inputBg}}>
-                                <Input
-                                    value={values.password}
-                                    onChangeText={handleChange('password')}
-                                    secureTextEntry
-                                />
-                            </Item>
-                        </Item>
-                        {errors.password ? (<Text>{errors.password}</Text>) : null}
-
-                        <Item stackedLabel style={{marginBottom: 20}}>
-                            <Label>Re-enter password</Label>
-                            <Item style={{backgroundColor: COLOURS.inputBg}}>
-                                <Input
-                                    value={values.passwordConfirmation}
-                                    onChangeText={handleChange('passwordConfirmation')}
-                                    secureTextEntry
-                                />
-                            </Item>
-                        </Item>
-                        {errors.passwordConfirmation ? (<Text>{errors.passwordConfirmation}</Text>) : null}
-
-                    </View>
-                    <View style={styles.userAuthActions}>
-                        <Button style={styles.signInActions} success onPress={handleSubmit} title="Submit">
-                            <Text>
-                                Create Account
-                            </Text>
-                        </Button>
-                        <Button style={[styles.registerActions, {backgroundColor: COLOURS.celleryDarkGrey}]} title="Sign in" onPress={() => {
-                            navigation.navigate('Sign in');
-                        }}>
-                            <Text>
-                                Back to Login
-                            </Text>
-                        </Button>
-                    </View>
-
-                </View>
-            )}
-        </Formik>
     );
 }
 

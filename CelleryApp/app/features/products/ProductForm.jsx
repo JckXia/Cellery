@@ -45,18 +45,23 @@ export function ProductForm({route, navigation}) {
     };
 
     const handleBackButton = async () => {
-        const response = await AlertAsync(
-            'Are you sure?',
-            'Leaving this page won\'t save any changes!',
-            [
-                {text: 'Yes', onPress: () => 'yes'},
-                {text: 'No', onPress: () => Promise.resolve('no')}
-            ],
-            {cancelable: true, onDismiss: () => "no"}
-        );
 
-        if (response === 'yes') {
+        if (formRef.current.values.name === name && formRef.current.values.description === description) {
             navigation.navigate('products');
+        } else {
+            const response = await AlertAsync(
+                'Are you sure?',
+                'Leaving this page won\'t save any changes!',
+                [
+                    {text: 'Yes', onPress: () => 'yes'},
+                    {text: 'No', onPress: () => Promise.resolve('no')}
+                ],
+                {cancelable: true, onDismiss: () => "no"}
+            );
+
+            if (response === 'yes') {
+                navigation.navigate('products');
+            }
         }
     };
 
@@ -122,7 +127,7 @@ export function ProductForm({route, navigation}) {
                         <View style={styles.container}>
 
                             <View style={styles.inputContainer}>
-                                <Item stackedLabel style={{marginBottom: 20}}>
+                                <Item stackedLabel style={{marginBottom: 5}}>
                                     <Label>Product name</Label>
                                     <Item style={{backgroundColor: COLOURS.inputBg}}>
                                         <Input
@@ -131,11 +136,11 @@ export function ProductForm({route, navigation}) {
                                         />
                                     </Item>
                                 </Item>
-                                {errors.name ? (<Text style={styles.textWarn}>{errors.name}</Text>) : null}
+                                {errors.name ? (<Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.name}</Text>) : null}
 
-                                <Item stackedLabel style={{marginBottom: 20}}>
+                                <Item stackedLabel style={{marginBottom: 5}}>
                                     <Label>Product description</Label>
-                                    <Item style={{backgroundColor: COLOURS.inputBg}}>
+                                    <Item style={{backgroundColor: COLOURS.inputBg, paddingBottom: 20}}>
                                         <Input
                                             multiline={true}
                                             value={values.description}
@@ -144,7 +149,7 @@ export function ProductForm({route, navigation}) {
                                     </Item>
                                 </Item>
                                 {errors.description ? (
-                                    <Text style={styles.textWarn}>{errors.description}</Text>) : null}
+                                    <Text style={{paddingBottom: 10, color: COLOURS.celleryRed}}> {errors.description}</Text>) : null}
 
                             </View>
                         </View>
