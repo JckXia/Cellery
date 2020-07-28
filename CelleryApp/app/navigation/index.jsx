@@ -11,9 +11,12 @@ import {Routines} from '../features/routines/Routines';
 import {Products} from "../features/products/Products";
 import {ProductForm} from "../features/products/ProductForm";
 import {RoutineEdit} from "../features/routines/RoutineEdit";
+import {AppLoading} from "expo";
+
 
 const Stack = createStackNavigator();
 export default function Navigator() {
+    const [load, setLoad] = React.useState(false);
     React.useEffect(() => {
         async function loadFont() {
             await Font.loadAsync({
@@ -23,7 +26,7 @@ export default function Navigator() {
             });
         }
 
-        loadFont();
+        loadFont().then(resp => setLoad(true));
     }, []);
 
     const defaultProductFormParams = {
@@ -38,36 +41,40 @@ export default function Navigator() {
         isAm: null
     }
 
-    return (
-        <AuthContextProvider>
-            <AuthContext.Consumer>
-                {({state}) => (
-                    <NavigationContainer>
-                        <Stack.Navigator
-                            screenOptions={{
-                                headerShown: false
-                            }}
-                        >
-                            {state.jwtToken ?
-                                (
-                                    <>
-                                        <Stack.Screen name={'home'} component={Dashboard}/>
-                                        <Stack.Screen name={'routines'} component={Routines}/>
-                                        <Stack.Screen name={'products'} component={Products}/>
-                                        <Stack.Screen name={'Product form'} component={ProductForm} initialParams={defaultProductFormParams}/>
-                                        <Stack.Screen name={'Routine edit'} component={RoutineEdit} initialParams={defaultRoutineParams} />
-                                    </>
+    if (!load) {
+        return (
+            <AppLoading/>
+            );
+    } else {
+        return (
+            <AuthContextProvider>
+                <AuthContext.Consumer>
+                    {({state}) => (
+                        <NavigationContainer>
+                            <Stack.Navigator screenOptions={{headerShown: false}}>
+                                {state.jwtToken ?
+                                    (
+                                        <>
+                                            <Stack.Screen name={'home'} component={Dashboard}/>
+                                            <Stack.Screen name={'routines'} component={Routines}/>
+                                            <Stack.Screen name={'products'} component={Products}/>
+                                            <Stack.Screen name={'Product form'} component={ProductForm}
+                                                          initialParams={defaultProductFormParams}/>
+                                            <Stack.Screen name={'Routine edit'} component={RoutineEdit}
+                                                          initialParams={defaultRoutineParams}/>
+                                        </>
 
-                                ) : (
-                                    <>
-                                        <Stack.Screen name={'Sign in'} component={SignInScreen}/>
-                                        <Stack.Screen name={'Sign up'} component={FormikSignUpForm}/>
-                                    </>
-                                )}
-                        </Stack.Navigator>
-                    </NavigationContainer>
-                )}
-            </AuthContext.Consumer>
-        </AuthContextProvider>
-    )
+                                    ) : (
+                                        <>
+                                            <Stack.Screen name={'Sign in'} component={SignInScreen}/>
+                                            <Stack.Screen name={'Sign up'} component={FormikSignUpForm}/>
+                                        </>
+                                    )}
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    )}
+                </AuthContext.Consumer>
+            </AuthContextProvider>
+        );
+    }
 }
