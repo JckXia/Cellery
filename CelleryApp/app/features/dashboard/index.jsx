@@ -7,7 +7,7 @@ import {styles} from "../../styles";
 import moment from "moment";
 import {COLOURS} from "../../colours";
 import ContributionGraph from "react-native-chart-kit/dist/contribution-graph";
-import {LineChart} from "react-native-svg-charts";
+import {LineChart, YAxis, Grid} from "react-native-svg-charts";
 
 
 export const Dashboard = ({navigation}) => {
@@ -24,7 +24,7 @@ export const Dashboard = ({navigation}) => {
     const [pastYearBtn, setPastYearBtn] = React.useState(false);
 
     React.useEffect(() => {
-        // get cur month data
+        // TODO: get cur month data
         setLoad(true);
     }, []);
 
@@ -204,24 +204,41 @@ export const Dashboard = ({navigation}) => {
                                 <Text>Skin Rating History</Text>
                             </Button>
                         </View>
-                        <LineChart
-                            style={{
-                                height: 200,
-                                backgroundColor: COLOURS.celleryLightGrey,
-                                borderRadius: 20
-                            }}
-                            data={data}
-                            yMin={1}
-                            xMin={1}
-                            yMax={10}
-                            contentInset={{top: 10, bottom: 10, left: 30, right: 30}}
-                            showGrid={false}
-                            svg={{
-                                strokeWidth: 2.5,
-                                stroke: COLOURS.celleryGreen,
-                                strokeLinecap: 'round'
-                            }}
-                        />
+                        <View style={{height: 200, flexDirection: 'row'}}>
+                            <YAxis
+                                data={data}
+                                contentInset={{top: 10, bottom: 10}}
+                                svg={{
+                                    fill: COLOURS.celleryMedGrey,
+                                    fontSize: 15,
+                                }}
+                                numberOfTicks={10}
+                                formatLabel={(value) => `${value}`}
+                                min={1}
+                                max={10}
+                            />
+                            <LineChart
+                                style={{
+                                    flex: 1,
+                                    marginLeft: 10,
+                                    marginRight: 10,
+                                    backgroundColor: COLOURS.celleryLightGrey,
+                                    borderRadius: 20
+                                }}
+                                data={data}
+                                yMin={1}
+                                xMin={1}
+                                yMax={10}
+                                contentInset={{top: 10, bottom: 10, left: 30, right: 30}}
+                                svg={{
+                                    strokeWidth: 2.5,
+                                    stroke: COLOURS.celleryGreen,
+                                    strokeLinecap: 'round'
+                                }}
+                            >
+                            <Grid svg={{stroke: COLOURS.celleryWhite}}/>
+                            </LineChart>
+                        </View>
 
                         <View style={styles.flexRow}>
                             <Segment>
