@@ -6,17 +6,20 @@ import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import {SignInScreen} from '../features/authentication/UserSignIn';
 import {FormikSignUpForm} from '../features/authentication/UserRegistration';
-import AuthContextProvider, {AuthContext} from "../providers/authProvider";
+import AuthContextProvider, {AuthContext, useAuth} from "../providers/authProvider";
 import {Routines} from '../features/routines/Routines';
 import {Products} from "../features/products/Products";
 import {ProductForm} from "../features/products/ProductForm";
 import {RoutineEdit} from "../features/routines/RoutineEdit";
 import {AppLoading} from "expo";
+import {AsyncStorage} from "react-native";
+import {getUserObject} from "../api/authentication";
 
 
 const Stack = createStackNavigator();
 export default function Navigator() {
     const [load, setLoad] = React.useState(false);
+    const authReducer = useAuth();
     React.useEffect(() => {
         async function loadFont() {
             await Font.loadAsync({
@@ -24,6 +27,16 @@ export default function Navigator() {
                 Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
                 ...Ionicons.font,
             });
+            const userToken = await AsyncStorage.getItem('REQUEST_TOKEN');
+            if (userToken) {
+                try {
+                  //  const {data} = await getUserObject(userToken);
+                  //  console.log('USER OBJECT ', data);
+                  //  console.log('Test ', AuthContext);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         }
 
         loadFont().then(resp => setLoad(true));
@@ -44,7 +57,7 @@ export default function Navigator() {
     if (!load) {
         return (
             <AppLoading/>
-            );
+        );
     } else {
         return (
             <AuthContextProvider>

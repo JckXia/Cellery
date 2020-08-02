@@ -1,7 +1,12 @@
 import React from 'react';
 import {authReducer, initialState} from './reducer'
 import {AsyncStorage} from "react-native";
-import {USER_SUCCESSFUL_AUTHENTICATED, USER_SUCCESSFUL_LOGOUT, USER_SUCCESSFUL_REGISTER} from '../actions'
+import {
+    TOKEN_SUCCESSFUL_VERIFICATION,
+    USER_SUCCESSFUL_AUTHENTICATED,
+    USER_SUCCESSFUL_LOGOUT,
+    USER_SUCCESSFUL_REGISTER
+} from '../actions'
 
 const AuthContext = React.createContext();
 
@@ -22,6 +27,13 @@ export const AuthContextProvider = (props) => {
         });
     }
 
+    const setJwtTokenAndUserObject = async (userObject, jwtToken) =>{
+        dispatch({
+            type: TOKEN_SUCCESSFUL_VERIFICATION,
+            payload:{jwtToken,user:userObject}
+        });
+    }
+
     const handleUserLogOut = async ()=>{
         await AsyncStorage.removeItem('REQUEST_TOKEN');
         dispatch({
@@ -31,7 +43,7 @@ export const AuthContextProvider = (props) => {
     };
 
     const value = React.useMemo(() => {
-        return {state, onUserRegistration, handleUserSignIn,handleUserLogOut}
+        return {state, onUserRegistration, handleUserSignIn,handleUserLogOut, setJwtTokenAndUserObject}
     }, [state]);
     return (
         <AuthContext.Provider value={value}>

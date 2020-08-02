@@ -25,6 +25,7 @@ export const Dashboard = ({navigation}) => {
 
     React.useEffect(() => {
         // TODO: get cur month data
+        console.log(time);
         setLoad(true);
     }, []);
 
@@ -86,11 +87,11 @@ export const Dashboard = ({navigation}) => {
 
     // PLACEHOLDER DATA for calendar heatmap
     const values = [
-        {date: '2020-07-01'},
+        {date: '2020-08-01'},
         {date: '2020-07-02'},
         {date: '2020-07-03'},
         {date: '2020-07-04'},
-        {date: '2020-07-05'},
+        {date: '2020-08-05'},
         {date: '2020-07-06'},
         {date: '2020-07-07'}
     ];
@@ -162,7 +163,7 @@ export const Dashboard = ({navigation}) => {
                                 accessor={'date'}
                                 horizontal={false}
                                 showMonthLabels={false}
-                                onDayPress={() => alert('You touched the square')} // TODO: change later to go to detailed cal view
+                                onDayPress={() => alert('You touched the squarse')} // TODO: change later to go to detailed cal view
                                 style={{
                                     color: COLOURS.celleryLightGrey,
                                     borderRadius: 20,

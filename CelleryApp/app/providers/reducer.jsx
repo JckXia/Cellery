@@ -1,4 +1,9 @@
-import {USER_SUCCESSFUL_AUTHENTICATED, USER_SUCCESSFUL_LOGOUT, USER_SUCCESSFUL_REGISTER} from '../actions'
+import {
+    TOKEN_SUCCESSFUL_VERIFICATION,
+    USER_SUCCESSFUL_AUTHENTICATED,
+    USER_SUCCESSFUL_LOGOUT,
+    USER_SUCCESSFUL_REGISTER
+} from '../actions'
 
 export const initialState = {
     currentUserLoggedIn: {
@@ -30,6 +35,12 @@ export const authReducer = (state, action) => {
                 userName: null,
                 jwtToken: null,
                 isRegistered: false
+            };
+        case TOKEN_SUCCESSFUL_VERIFICATION:
+            return {
+                ...state,
+                userName:action.payload.user.userName,
+                jwtToken: action.payload.jwtToken
             };
         default:
             return state;
