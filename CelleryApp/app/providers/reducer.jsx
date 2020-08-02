@@ -39,7 +39,7 @@ export const authReducer = (state, action) => {
         case TOKEN_SUCCESSFUL_VERIFICATION:
             return {
                 ...state,
-                userName:action.payload.user.userName,
+                userName: action.payload.user.userName,
                 jwtToken: action.payload.jwtToken
             };
         default:
