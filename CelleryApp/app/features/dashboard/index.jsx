@@ -18,6 +18,7 @@ export const Dashboard = ({navigation}) => {
     const [monthLogs, setMonthLogs] = React.useState([]);
     const [settings, setSettings] = React.useState(false);
     const [calTime, setCalTime] = React.useState(time.clone());
+
     const screenWidth = Dimensions.get('window').width;
     const [past30Btn, setPast30Btn] = React.useState(true);
     const [past90Btn, setPast90Btn] = React.useState(false);
