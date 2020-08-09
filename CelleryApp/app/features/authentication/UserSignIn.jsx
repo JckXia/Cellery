@@ -5,6 +5,7 @@ import {styles} from "../../styles";
 import {authApi} from '../../api';
 const CelleryLogo = require('../../../assets/Cellery_logo.png');
 import {useAuth} from "../../providers/authProvider";
+import {COLOURS} from "../../colours";
 
 
 export function SignInScreen({navigation}) {
@@ -14,12 +15,16 @@ export function SignInScreen({navigation}) {
     const {handleUserSignIn} = useAuth();
 
     const onUserSignInSubmission = async (username, password) => {
-        try {
-            const loginResp = await authApi.userLogin(username, password);
-            await handleUserSignIn(loginResp, username);
-        } catch (e) {
-            //TODO: Use Sweet alert(react-native equivalent)
-            alert(e);
+        if (username !== '' && password !== '') {
+            try {
+                const loginResp = await authApi.userLogin(username, password);
+                await handleUserSignIn(loginResp, username);
+            } catch (e) {
+                //TODO: Use Sweet alert(react-native equivalent)
+                alert(e);
+            }
+        } else {
+            alert("Please enter your login details");
         }
     }
     return (
@@ -34,7 +39,7 @@ export function SignInScreen({navigation}) {
             <View styles={styles.inputContainer}>
                 <Item stackedLabel style={{marginBottom: 20}}>
                     <Label>Email</Label>
-                    <Item style={{backgroundColor: '#D3D3D3'}}>
+                    <Item style={{backgroundColor: COLOURS.inputBg}}>
                         <Input
                             value={username}
                             onChangeText={setUsername}
@@ -44,7 +49,7 @@ export function SignInScreen({navigation}) {
 
                 <Item stackedLabel>
                     <Label>Password</Label>
-                    <Item style={{backgroundColor: '#D3D3D3'}}>
+                    <Item style={{backgroundColor: COLOURS.inputBg}}>
                         <Input
                             value={password}
                             secureTextEntry
@@ -54,10 +59,10 @@ export function SignInScreen({navigation}) {
                 </Item>
 
                 <View style={styles.userAuthOptions}>
-                    <Button style={styles.signInActions} success onPress={async () => {
+                    <Button style={[styles.signInActions, {backgroundColor: COLOURS.celleryGreen}]} success onPress={async () => {
                         await onUserSignInSubmission(username, password);
-                    }}><Text>Sign In using email</Text></Button>
-                    <Button style={styles.registerActions} title="Register" onPress={() => {
+                    }}><Text>Sign In</Text></Button>
+                    <Button style={[styles.registerActions, {backgroundColor: COLOURS.cellerySalmon}]} title="Register" onPress={() => {
                         navigation.navigate('Sign up');
                     }}><Text>Sign up with email</Text></Button>
                 </View>

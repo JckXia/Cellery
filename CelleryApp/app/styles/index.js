@@ -24,6 +24,7 @@ export const styles={
     },
     headerTextStyle:{
         color:'#85C87C',
+        fontWeight: '600'
     },
     inputContainer: {
         flexDirection: 'column',
@@ -48,13 +49,38 @@ export const styles={
     },
     button: {
         justifyContent: 'center',
-        padding: 10,
         margin: 5
     },
-    flex3: {
+    flexRow: {
         flexDirection: 'row',
-        flex: 3,
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
+    },
+    centerText: {
+        textAlign: 'center'
+    },
+    popupContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    popupTitle: {
+        fontSize: 20,
+        marginBottom: 10
+    },
+    view: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    flexOne: {
+        flex: 1
+    },
+    flexTwo: {
+        flex: 2
     }
 };
